@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HeritageX Valuation</title>
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;background:#0f1115;color:#fff;margin:0}
+    .wrap{max-width:880px;margin:0 auto;padding:60px 20px}
+    a{color:#fff;opacity:.8}
+    .card{background:#151823;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:22px;margin-top:18px}
+    input,select,button{font-size:16px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#0f1115;color:#fff;padding:12px 14px}
+    input,select{width:100%}
+    button{cursor:pointer;background:#fff;color:#000;font-weight:700;border:none;padding:12px 16px}
+    .row{display:grid;grid-template-columns:1.4fr .6fr;gap:12px}
+    .muted{opacity:.7}
+    pre{white-space:pre-wrap;word-break:break-word;background:#0b0d12;border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,.08)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a href="/">← Back</a>
+    <h1 style="margin:18px 0 8px;">Plate Valuation</h1>
+    <div class="muted">MVP — connect to your Worker API.</div>
+
+    <div class="card">
+      <div class="row">
+        <div>
+          <div class="muted" style="margin-bottom:8px;">Plate</div>
+          <input id="plate" placeholder="e.g. 888, A8, 1, VIP88" />
+        </div>
+        <div>
+          <div class="muted" style="margin-bottom:8px;">State</div>
+          <select id="state">
+            <option value="NSW">NSW</option>
+            <option value="VIC">VIC</option>
+            <option value="QLD">QLD</option>
+            <option value="SA">SA</option>
+            <option value="WA">WA</option>
+            <option value="TAS">TAS</option>
+            <option value="ACT">ACT</option>
+            <option value="NT">NT</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:10px;align-items:center;">
+        <button id="btn">Valuate</button>
+        <span id="status" class="muted"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="muted" style="margin-bottom:10px;">Result</div>
+      <pre id="result">{ waiting... }</pre>
+    </div>
+  </div>
+
+  <script>
+    const WORKER_BASE = "https://heritagex-ai.fancy-sun-2f24.workers.dev"; // 你的 Worker
+    const statusEl = document.getElementById("status");
+    const resultEl = document.getElementById("result");
+
+    document.getElementById("btn").addEventListener("click", async () => {
+      const plate = document.getElementById("plate").value.trim();
+      const state = document.getElementById("state").value;
+
+      if (!plate) { alert("Please enter a plate."); return; }
+
+      statusEl.textContent = "Requesting...";
+      resultEl.textContent = "{ loading... }";
+
+      // ⚠️ 这里的 PATH 需要你第1步确认（/api? /valuate? /health?）
+      // 我先用根路径占位，确保页面能跑通。
+      const url = `${WORKER_BASE}/`;
+
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ plate, state })
+        });
+
+        const text = await res.text();
+        statusEl.textContent = `HTTP ${res.status}`;
+        resultEl.textContent = text;
+      } catch (e) {
+        statusEl.textContent = "Error";
+        resultEl.textContent = String(e);
+      }
+    });
+  </script>
+</body>
+</html>
