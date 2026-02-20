@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HeritageX</title>
+  <meta name="description" content="HeritageX：历史车牌、经典汽车与全球资源采购，在 AI 的加持下汇聚，并由澳洲持牌进出口主体执行合规运营。" />
+  <style>
+    :root{
+      --bg:#07090d;
+      --fg:#ffffff;
+      --muted: rgba(255,255,255,.72);
+      --outline: rgba(255,255,255,.15);
+      --chip: rgba(255,255,255,.08);
+      --chipBorder: rgba(255,255,255,.14);
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      color:var(--fg);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei","Helvetica Neue",Segoe UI,Roboto,sans-serif;
+      background: var(--bg);
+      overflow-x:hidden;
+    }
+    .bg{
+      position:fixed; inset:0; z-index:-1;
+      background:
+        radial-gradient(1200px 700px at 50% 35%, rgba(255,255,255,.08), rgba(255,255,255,0) 55%),
+        radial-gradient(900px 600px at 15% 20%, rgba(120,170,255,.10), rgba(120,170,255,0) 60%),
+        radial-gradient(900px 600px at 85% 25%, rgba(180,140,255,.09), rgba(180,140,255,0) 62%),
+        linear-gradient(180deg, #05070a 0%, #07090d 45%, #06070b 100%);
+      filter: saturate(105%);
+    }
+    .topbar{
+      position: fixed;
+      top: 18px; left: 18px; right: 18px;
+      display:flex; justify-content:flex-end;
+      pointer-events:none;
+    }
+    .lang{
+      pointer-events:auto;
+      display:inline-flex; gap:10px; align-items:center;
+      padding:10px 14px;
+      border-radius:999px;
+      background: var(--chip);
+      border: 1px solid var(--chipBorder);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: rgba(255,255,255,.9);
+      text-decoration:none;
+      font-size: 13px;
+      letter-spacing:.2px;
+      transition: all .2s ease;
+    }
+    .lang:hover{ background: rgba(255,255,255,.11); transform: translateY(-1px); }
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 120px 20px;
+      text-align:center;
+    }
+    h1{
+      margin:0;
+      font-size: clamp(46px, 7vw, 76px);
+      font-weight: 520;
+      letter-spacing: 2px;
+    }
+    .slogan{
+      margin: 28px auto 0;
+      font-size: clamp(16px, 2.1vw, 18px);
+      line-height: 1.95;
+      color: var(--muted);
+      max-width: 860px;
+      font-weight: 320;
+    }
+    .cta{
+      margin-top: 70px;
+      display:flex;
+      justify-content:center;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+    .btnPrimary{
+      padding: 14px 48px;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #0b0d11;
+      text-decoration:none;
+      font-weight: 560;
+      letter-spacing: .2px;
+      box-shadow:
+        0 20px 55px rgba(0,0,0,.35),
+        0 1px 0 rgba(255,255,255,.22) inset;
+      transition: all .25s ease;
+    }
+    .btnPrimary:hover{ transform: translateY(-2px); background:#f2f2f2; }
+    .btnOutline{
+      padding: 14px 44px;
+      border-radius: 999px;
+      background: transparent;
+      color: #ffffff;
+      text-decoration:none;
+      font-weight: 500;
+      border: 1px solid var(--outline);
+      transition: all .25s ease;
+    }
+    .btnOutline:hover{ background: rgba(255,255,255,.06); transform: translateY(-2px); }
+    .foot{
+      margin-top: 60px;
+      font-size: 12px;
+      opacity: .6;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+
+  <!-- Language switch -->
+  <div class="topbar">
+    <a class="lang" href="/" aria-label="Switch to English">
+      EN
+    </a>
+  </div>
+
+  <main class="wrap">
+    <div>
+      <h1>HeritageX</h1>
+      <p class="slogan">
+        在 AI 的加持下，让历史车牌、经典汽车与全球资源采购<br>
+        汇聚于同一平台，并由澳洲持牌进出口主体执行合规运营。
+      </p>
+
+      <div class="cta">
+        <a class="btnPrimary" href="/cn/explore">探索</a>
+        <a class="btnOutline" href="/cn/valuation">估值</a>
+      </div>
+
+      <div class="foot">© 2026 HeritageX. All rights reserved.</div>
+    </div>
+  </main>
+</body>
+</html>
