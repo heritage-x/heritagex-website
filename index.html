@@ -10,14 +10,11 @@
       --bg:#07090d;
       --fg:#ffffff;
       --muted: rgba(255,255,255,.72);
-      --muted2: rgba(255,255,255,.58);
-      --btn:#ffffff;
-      --btnText:#0b0d11;
-      --ring: rgba(255,255,255,.14);
     }
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
+
     body{
       margin:0;
       color:var(--fg);
@@ -26,7 +23,6 @@
       overflow-x:hidden;
     }
 
-    /* Subtle premium background: multi-layer gradients + vignette + grain */
     .bg{
       position:fixed;
       inset:0;
@@ -35,30 +31,17 @@
         radial-gradient(1200px 700px at 50% 35%, rgba(255,255,255,.08), rgba(255,255,255,0) 55%),
         radial-gradient(900px 600px at 15% 20%, rgba(120,170,255,.10), rgba(120,170,255,0) 60%),
         radial-gradient(900px 600px at 85% 25%, rgba(180,140,255,.09), rgba(180,140,255,0) 62%),
-        radial-gradient(1000px 800px at 50% 95%, rgba(60,110,255,.08), rgba(60,110,255,0) 55%),
         linear-gradient(180deg, #05070a 0%, #07090d 45%, #06070b 100%);
     }
 
-    /* Vignette */
     .bg::before{
       content:"";
       position:absolute;
       inset:-40px;
       background: radial-gradient(1200px 900px at 50% 40%,
         rgba(0,0,0,0) 40%,
-        rgba(0,0,0,.42) 78%,
+        rgba(0,0,0,.45) 80%,
         rgba(0,0,0,.75) 100%);
-      pointer-events:none;
-    }
-
-    /* Grain (noise) */
-    .bg::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
-      opacity:.10;
-      mix-blend-mode: overlay;
       pointer-events:none;
     }
 
@@ -68,26 +51,7 @@
       align-items:center;
       justify-content:center;
       padding: 120px 20px;
-    }
-
-    .card{
-      width:min(920px, 100%);
       text-align:center;
-      padding: 10px 10px;
-    }
-
-    .brand{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      margin: 0 auto 22px;
-      opacity:.95;
-    }
-
-    .dot{
-      width:7px;height:7px;border-radius:50%;
-      background: rgba(255,255,255,.7);
-      box-shadow: 0 0 0 6px rgba(255,255,255,.06);
     }
 
     h1{
@@ -95,47 +59,38 @@
       font-size: clamp(46px, 7vw, 76px);
       font-weight: 520;
       letter-spacing: 2px;
-      line-height: 1.02;
     }
 
     .slogan{
-      margin: 26px auto 0;
+      margin: 28px auto 0;
       font-size: clamp(16px, 2.1vw, 18px);
-      line-height: 1.95;
+      line-height: 1.9;
       color: var(--muted);
       max-width: 820px;
       font-weight: 320;
-      letter-spacing: .15px;
-      text-wrap: balance;
     }
 
-    .ctaRow{
-      margin-top: 64px;
-      display:flex;
-      justify-content:center;
-      gap:14px;
-      flex-wrap:wrap;
+    .cta{
+      margin-top: 70px;
     }
 
     .btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      gap:10px;
-      padding: 14px 44px;
+      padding: 14px 48px;
       border-radius: 999px;
-      background: var(--btn);
-      color: var(--btnText);
+      background: #ffffff;
+      color: #0b0d11;
       text-decoration:none;
       font-weight: 560;
       letter-spacing: .4px;
       box-shadow:
         0 20px 55px rgba(0,0,0,.35),
         0 1px 0 rgba(255,255,255,.22) inset;
-      transform: translateY(0);
       transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
-      will-change: transform;
     }
+
     .btn:hover{
       transform: translateY(-2px);
       box-shadow:
@@ -143,47 +98,11 @@
         0 1px 0 rgba(255,255,255,.22) inset;
       background: #f2f2f2;
     }
-    .btn:active{ transform: translateY(0); }
-
-    .btnOutline{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding: 14px 34px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.02);
-      color: rgba(255,255,255,.86);
-      text-decoration:none;
-      font-weight: 520;
-      letter-spacing: .35px;
-      border: 1px solid var(--ring);
-      backdrop-filter: blur(8px);
-      transition: background .25s ease, transform .25s ease, border-color .25s ease;
-    }
-    .btnOutline:hover{
-      background: rgba(255,255,255,.05);
-      border-color: rgba(255,255,255,.22);
-      transform: translateY(-1px);
-    }
 
     .foot{
-      margin-top: 56px;
+      margin-top: 60px;
       font-size: 12px;
-      color: var(--muted2);
-      letter-spacing: .25px;
-      opacity: .9;
-    }
-
-    /* Accessibility focus */
-    a:focus{
-      outline: none;
-      box-shadow: 0 0 0 4px rgba(120,170,255,.18);
-    }
-
-    @media (max-width: 480px){
-      .ctaRow{ margin-top: 46px; }
-      .btn{ width: 92%; }
-      .btnOutline{ width: 92%; }
+      opacity: .6;
     }
   </style>
 </head>
@@ -192,11 +111,7 @@
   <div class="bg"></div>
 
   <main class="wrap">
-    <section class="card">
-      <div class="brand" aria-hidden="true">
-        <span class="dot"></span>
-      </div>
-
+    <div>
       <h1>HeritageX</h1>
 
       <p class="slogan">
@@ -204,20 +119,14 @@
         meet AI intelligence and Australian licensed import &amp; export operations.
       </p>
 
-      <div class="ctaRow">
+      <div class="cta">
         <a class="btn" href="/valuation">Explore</a>
-        <!-- 可选：留一个第二按钮，未来做 About / Contact -->
-        <a class="btnOutline" href="/about">Learn more</a>
       </div>
 
       <div class="foot">
-        © <span id="y"></span> HeritageX. All rights reserved.
+        © 2026 HeritageX. All rights reserved.
       </div>
-    </section>
+    </div>
   </main>
-
-  <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
