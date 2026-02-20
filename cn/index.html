@@ -4,57 +4,72 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HeritageX</title>
-  <meta name="description" content="让历史车牌、经典车与全球寻源，在 AI 加持下与澳洲持牌进出口运营相遇。" />
+  <meta name="description" content="让历史车牌、经典汽车与全球寻源，在 AI 加持下，与澳洲合规进出口运营能力高效连接。" />
   <style>
     :root{
-      --bg: #0b0d12;
-      --fg: #ffffff;
-      --muted: rgba(255,255,255,.72);
-      --muted2: rgba(255,255,255,.55);
-      --border: rgba(255,255,255,.10);
-      --border2: rgba(255,255,255,.14);
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --bg:#07080c;
+      --fg:#fff;
+      --muted: rgba(255,255,255,.44);   /* ultra minimal */
+      --muted2: rgba(255,255,255,.34);
+      --hair: rgba(255,255,255,.10);
+      --hair2: rgba(255,255,255,.14);
+      --shadow: 0 20px 70px rgba(0,0,0,.60);
+      --shadowSoft: 0 10px 35px rgba(0,0,0,.35);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+                   "Microsoft YaHei", "Noto Sans SC", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color:var(--fg);
-      background: var(--bg);
+      background:var(--bg);
       overflow-x:hidden;
     }
 
     .bg{
-      position:fixed; inset:0; z-index:-2;
+      position:fixed; inset:0; z-index:-3;
       background:
-        radial-gradient(1200px 800px at 20% 10%, rgba(120,170,255,.22), transparent 55%),
-        radial-gradient(900px 700px at 85% 25%, rgba(180,130,255,.18), transparent 55%),
-        radial-gradient(800px 600px at 30% 85%, rgba(90,255,220,.10), transparent 55%),
-        linear-gradient(180deg, #0b0d12 0%, #07080c 60%, #05060a 100%);
-      filter:saturate(110%);
+        radial-gradient(1200px 800px at 15% 10%, rgba(120,170,255,.20), transparent 60%),
+        radial-gradient(1000px 700px at 88% 18%, rgba(180,130,255,.16), transparent 60%),
+        radial-gradient(900px 650px at 24% 92%, rgba(90,255,220,.08), transparent 62%),
+        linear-gradient(180deg, #07080c 0%, #05060a 65%, #04050a 100%);
+      filter:saturate(112%);
+    }
+    .drift{
+      position:fixed; inset:-20%; z-index:-2;
+      background:
+        radial-gradient(700px 520px at 25% 35%, rgba(120,170,255,.18), transparent 60%),
+        radial-gradient(740px 560px at 78% 45%, rgba(180,130,255,.14), transparent 62%),
+        radial-gradient(620px 520px at 50% 85%, rgba(90,255,220,.08), transparent 65%);
+      opacity:.45;
+      animation: drift 18s ease-in-out infinite alternate;
+      transform: translate3d(0,0,0);
+      pointer-events:none;
+    }
+    @keyframes drift{
+      0%{ transform: translate(-2.5%, -1.2%) scale(1.02); filter: blur(0px); }
+      100%{ transform: translate(2.2%, 1.6%) scale(1.04); filter: blur(0.6px); }
     }
     .vignette{
       position:fixed; inset:-2px; z-index:-1;
       background:
-        radial-gradient(1200px 700px at 50% 45%, transparent 35%, rgba(0,0,0,.55) 80%),
-        radial-gradient(900px 500px at 50% 120%, rgba(0,0,0,.55), transparent 60%);
+        radial-gradient(1200px 760px at 50% 44%, transparent 38%, rgba(0,0,0,.60) 84%),
+        radial-gradient(900px 520px at 50% 120%, rgba(0,0,0,.62), transparent 62%);
       pointer-events:none;
     }
     .grain{
       position:fixed; inset:0; z-index:-1;
       pointer-events:none;
-      opacity:.08;
+      opacity:.06;
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
       mix-blend-mode: overlay;
     }
 
     .topbar{
-      position:fixed;
-      top:0; left:0; right:0;
+      position:fixed; top:0; left:0; right:0;
       padding:22px 24px;
-      display:flex;
-      justify-content:flex-end;
+      display:flex; justify-content:flex-end;
       z-index:20;
     }
 
@@ -62,64 +77,60 @@
     .lang-btn{
       display:flex; align-items:center; gap:10px;
       padding:10px 12px;
-      border-radius: 999px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.06);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(0,0,0,.30);
-      color: rgba(255,255,255,.88);
+      border-radius:999px;
+      border:1px solid var(--hair);
+      background: rgba(255,255,255,.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--shadowSoft);
+      color: rgba(255,255,255,.82);
       cursor:pointer;
       transition: transform .15s ease, border-color .15s ease, background .15s ease;
     }
     .lang-btn:hover{
       transform: translateY(-1px);
-      border-color: var(--border2);
-      background: rgba(255,255,255,.08);
+      border-color: var(--hair2);
+      background: rgba(255,255,255,.07);
     }
-    .lang-label{ font-size: 13px; letter-spacing: .2px; opacity: .9; }
-    .chev{ width: 10px; height: 10px; opacity:.8; }
+    .lang-label{ font-size:13px; letter-spacing:.2px; opacity:.9; }
+    .chev{ width:10px; height:10px; opacity:.8; }
     .globe{ width:18px; height:18px; opacity:.95; filter: drop-shadow(0 6px 14px rgba(0,0,0,.35)); }
 
     .lang-menu{
-      position:absolute;
-      top: 46px;
-      right: 0;
-      min-width: 150px;
-      padding: 8px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: rgba(12,14,18,.72);
+      position:absolute; top:46px; right:0;
+      min-width: 160px;
+      padding:8px;
+      border-radius:14px;
+      border:1px solid var(--hair);
+      background: rgba(10,12,16,.72);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       box-shadow: var(--shadow);
       transform-origin: top right;
-      transform: translateY(-6px) scale(.98);
-      opacity: 0;
-      pointer-events:none;
+      transform: translateY(-6px) scale(.985);
+      opacity:0; pointer-events:none;
       transition: opacity .16s ease, transform .16s ease;
     }
     .lang.open .lang-menu{
-      opacity: 1;
-      transform: translateY(0px) scale(1);
+      opacity:1; transform: translateY(0) scale(1);
       pointer-events:auto;
     }
     .lang-item{
       display:flex; align-items:center; justify-content:space-between;
       padding:10px 10px;
-      border-radius: 10px;
-      color: rgba(255,255,255,.88);
+      border-radius:10px;
+      color: rgba(255,255,255,.86);
       text-decoration:none;
-      font-size: 13px;
-      border: 1px solid transparent;
+      font-size:13px;
+      border:1px solid transparent;
       transition: background .14s ease, border-color .14s ease;
     }
     .lang-item:hover{
-      background: rgba(255,255,255,.07);
+      background: rgba(255,255,255,.06);
       border-color: rgba(255,255,255,.08);
     }
     .tag{
-      font-size: 11px;
+      font-size:11px;
       color: rgba(255,255,255,.55);
       border: 1px solid rgba(255,255,255,.10);
       padding: 3px 8px;
@@ -132,68 +143,121 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 110px 20px 70px;
+      padding: 118px 20px 76px;
     }
     .hero{
       text-align:center;
       width:min(980px, 92vw);
     }
     h1{
-      margin:0 0 18px;
-      font-size: clamp(44px, 6vw, 72px);
+      margin:0 0 22px;
+      font-size: clamp(48px, 6vw, 76px);
       letter-spacing: -0.02em;
-      line-height: 1.02;
-      font-weight: 760;
-      text-shadow: 0 18px 60px rgba(0,0,0,.55);
+      line-height: 1.01;
+      font-weight: 800;
+      text-shadow: 0 18px 65px rgba(0,0,0,.60);
     }
+
     .subtitle{
       margin:0 auto;
-      max-width: 780px;
-      font-size: clamp(16px, 2.2vw, 20px);
-      line-height: 1.65;
+      max-width: 620px;
+      font-size: clamp(14px, 2vw, 17px);
+      line-height: 2.05;
+      letter-spacing: .25px;
       color: var(--muted);
-      letter-spacing: .2px;
-      text-shadow: 0 14px 40px rgba(0,0,0,.55);
+      text-shadow: 0 14px 45px rgba(0,0,0,.60);
+    }
+    .subtitle .line{
+      display:block;
+      background: linear-gradient(90deg, rgba(255,255,255,.60), rgba(255,255,255,.34));
+      -webkit-background-clip:text; background-clip:text;
+      color:transparent;
     }
 
     .actions{
       display:flex;
-      gap:14px;
+      gap:12px;
       justify-content:center;
       align-items:center;
-      margin-top: 34px;
+      margin-top: 46px;
       flex-wrap:wrap;
     }
+
     .btn{
+      position:relative;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      padding: 14px 22px;
+      padding: 12.5px 20px;
       border-radius: 999px;
       text-decoration:none;
       font-weight: 700;
       letter-spacing: .2px;
-      transition: transform .15s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
-      border: 1px solid transparent;
-      min-width: 148px;
+      min-width: 150px;
+      transform: translateZ(0);
+      transition: transform .16s ease, opacity .16s ease;
+      isolation:isolate;
     }
     .btn-primary{
-      background: #ffffff;
-      color: #0b0d12;
-      box-shadow: 0 18px 55px rgba(0,0,0,.55);
+      background:#fff;
+      color:#07080c;
+      box-shadow: 0 22px 65px rgba(0,0,0,.58);
     }
-    .btn-primary:hover{ transform: translateY(-1px); opacity:.98 }
+    .btn-primary:hover{ transform: translateY(-1px); opacity:.99; }
+
     .btn-ghost{
-      background: rgba(255,255,255,.06);
-      border-color: rgba(255,255,255,.14);
-      color: rgba(255,255,255,.92);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      color: rgba(255,255,255,.88);
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+    }
+    .btn-ghost::before{
+      content:"";
+      position:absolute; inset:-1px;
+      border-radius:999px;
+      padding:1px;
+      background: linear-gradient(140deg,
+        rgba(255,255,255,.22),
+        rgba(255,255,255,.06),
+        rgba(120,170,255,.10),
+        rgba(255,255,255,.04));
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity:.75;
+      pointer-events:none;
+    }
+    .btn-ghost::after{
+      content:"";
+      position:absolute; inset:0;
+      border-radius:999px;
+      background: linear-gradient(110deg,
+        transparent 0%,
+        rgba(255,255,255,.18) 18%,
+        rgba(255,255,255,.06) 32%,
+        transparent 55%);
+      transform: translateX(-130%);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .18s ease;
+      filter: blur(.2px);
     }
     .btn-ghost:hover{
       transform: translateY(-1px);
-      background: rgba(255,255,255,.08);
+      background: rgba(255,255,255,.06);
       border-color: rgba(255,255,255,.18);
+    }
+    .btn-ghost:hover::after{
+      opacity:.75;
+      animation: shimmer 1.35s ease forwards;
+    }
+    @keyframes shimmer{
+      0%{ transform: translateX(-130%); }
+      100%{ transform: translateX(130%); }
     }
 
     footer{
@@ -202,19 +266,27 @@
       padding: 18px 22px;
       text-align:center;
       font-size: 12px;
-      color: rgba(255,255,255,.45);
+      color: rgba(255,255,255,.36);
       letter-spacing:.3px;
       pointer-events:none;
     }
 
     @media (max-width:480px){
       .topbar{padding:16px 14px}
-      .btn{min-width: 140px}
+      .wrap{padding-top:108px}
+      .subtitle{max-width: 330px}
+      .btn{min-width: 146px}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .drift{animation:none}
+      .btn-ghost:hover::after{animation:none}
     }
   </style>
 </head>
 <body>
   <div class="bg"></div>
+  <div class="drift"></div>
   <div class="grain"></div>
   <div class="vignette"></div>
 
@@ -232,7 +304,7 @@
         </svg>
       </button>
 
-      <div class="lang-menu" role="menu" aria-label="语言菜单">
+      <div class="lang-menu" role="menu" aria-label="Language menu">
         <a class="lang-item" href="/" role="menuitem">
           English <span class="tag">EN</span>
         </a>
@@ -246,19 +318,20 @@
   <main class="wrap">
     <section class="hero">
       <h1>HeritageX</h1>
+
       <p class="subtitle">
-        让历史车牌、经典车与全球寻源<br>
-        在 AI 加持下，与澳洲持牌进出口运营相遇。
+        <span class="line">让历史车牌、经典汽车与全球寻源</span>
+        <span class="line">在 AI 加持下，与澳洲合规进出口运营能力高效连接。</span>
       </p>
 
       <div class="actions">
-        <a class="btn btn-primary" href="/cn/#explore">探索</a>
-        <a class="btn btn-ghost" href="/cn/valuation.html">估值</a>
+        <a class="btn btn-primary" href="/#explore">探索</a>
+        <a class="btn btn-ghost" href="/valuation.html">估值</a>
       </div>
     </section>
   </main>
 
-  <footer>© 2026 HeritageX. 版权所有。</footer>
+  <footer>© 2026 HeritageX. All rights reserved.</footer>
 
   <script>
     (function () {
