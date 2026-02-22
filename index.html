@@ -6,122 +6,96 @@
   <title>HeritageX | AI Powered Automotive Assets</title>
   <style>
     :root {
-      --bg: #030407;
-      --fg: #fff;
+      --bg: #000000;
+      --fg: #ffffff;
       --accent: #5a8cff;
-      --hair: rgba(255, 255, 255, .1);
-      --glass: rgba(255, 255, 255, .05);
+      --glass: rgba(255, 255, 255, 0.03);
+      --hair: rgba(255, 255, 255, 0.08);
     }
 
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
     html, body { height: 100%; margin: 0; background: var(--bg); color: var(--fg); font-family: -apple-system, system-ui, sans-serif; overflow: hidden; }
 
-    /* --- 动态流光背景 --- */
+    /* --- 修复背景：增加深邃渐变层级 --- */
     .scene { position: fixed; inset: 0; z-index: -1; }
     .orb {
-      position: absolute; top: 40%; left: 50%; width: 50vw; height: 50vw;
-      background: radial-gradient(circle, rgba(90, 140, 255, 0.12) 0%, transparent 70%);
-      transform: translate(-50%, -50%); filter: blur(60px);
-      animation: pulse 12s ease-in-out infinite alternate;
+      position: absolute; top: 45%; left: 50%; width: 70vw; height: 70vw;
+      background: radial-gradient(circle at center, rgba(90, 140, 255, 0.15) 0%, rgba(180, 120, 255, 0.05) 30%, transparent 70%);
+      transform: translate(-50%, -50%); filter: blur(80px);
+      animation: breathe 15s ease-in-out infinite alternate;
     }
     .drift {
-      position: absolute; inset: -5%;
-      background: radial-gradient(circle at 80% 20%, rgba(180, 120, 255, 0.08) 0%, transparent 40%);
-      transition: transform 0.3s cubic-bezier(0.1, 0, 0.2, 1);
+      position: absolute; inset: -10%;
+      background: radial-gradient(circle at 10% 10%, rgba(90, 255, 220, 0.03) 0%, transparent 40%),
+                  radial-gradient(circle at 90% 80%, rgba(180, 120, 255, 0.03) 0%, transparent 40%);
+      transition: transform 0.5s cubic-bezier(0.1, 0, 0.2, 1);
     }
-    @keyframes pulse { from { opacity: 0.4; transform: translate(-50%, -50%) scale(1); } to { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); } }
+    @keyframes breathe { from { opacity: 0.3; transform: translate(-50%, -50%) scale(1); } to { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); } }
 
-    /* --- 统一 CN / EN 切换 --- */
+    /* --- 导航 --- */
     .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 40px; display: flex; justify-content: flex-end; z-index: 100; }
-    .lang-switcher {
-      font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--fg);
-      text-decoration: none; padding: 8px 20px; border-radius: 99px;
-      border: 1px solid var(--hair); background: var(--glass);
-      backdrop-filter: blur(10px); transition: 0.3s;
-    }
-    .lang-switcher:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+    .lang-switcher { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #fff; text-decoration: none; padding: 10px 24px; border-radius: 99px; border: 1px solid var(--hair); background: var(--glass); backdrop-filter: blur(20px); transition: 0.4s; }
+    .lang-switcher:hover { border-color: var(--accent); background: rgba(255,255,255,0.1); box-shadow: 0 0 20px rgba(90, 140, 255, 0.2); }
 
-    /* --- 主体内容 --- */
+    /* --- 内容排版 --- */
     .wrap { height: 100%; display: flex; align-items: center; justify-content: center; }
-    .hero { text-align: center; width: 100%; max-width: 1100px; padding: 0 40px; }
+    .hero { text-align: center; width: 100%; max-width: 1200px; padding: 0 40px; }
 
-    .tagline {
-      font-size: 11px; font-weight: 700; color: var(--accent);
-      letter-spacing: 5px; text-transform: uppercase; margin-bottom: 24px;
-    }
-
-    /* 修复 g 裁切的关键排版 */
+    /* 品牌名：修复 g 的显示，增加柔和渐变 */
     h1 {
-      font-size: clamp(60px, 12vw, 130px);
-      font-weight: 800; letter-spacing: -0.05em; 
-      line-height: 1.1; /* 增加行高 */
-      margin: 0 0 30px; 
-      padding-bottom: 15px; /* 为 g 预留展示空间 */
-      background: linear-gradient(to bottom, #fff 50%, rgba(255,255,255,0.4));
+      font-size: clamp(64px, 12vw, 140px); font-weight: 800; letter-spacing: -0.04em; 
+      line-height: 1.2; margin: 0 0 10px; padding-bottom: 10px;
+      background: linear-gradient(180deg, #FFFFFF 30%, #999999 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
+    /* Slogan：修复亮暗不均，采用统一的半透明高级白 */
     .subtitle {
-      font-size: clamp(13px, 1.6vw, 16px); color: rgba(255,255,255,0.5);
-      line-height: 1.8; letter-spacing: 0.15em; text-transform: uppercase;
+      font-size: clamp(14px, 1.8vw, 18px); 
+      color: rgba(255, 255, 255, 0.6); /* 统一色调，避免一半亮一半暗 */
+      line-height: 1.6; letter-spacing: 0.15em; text-transform: uppercase;
       margin-bottom: 60px;
     }
-    .subtitle b { color: #fff; font-weight: 600; }
+    .subtitle b { color: #ffffff; font-weight: 600; }
 
-    /* --- 对等磨砂按钮 --- */
-    .actions { display: flex; gap: 20px; justify-content: center; }
+    /* --- 按钮：完全对等的高级感 --- */
+    .actions { display: flex; gap: 24px; justify-content: center; }
     .btn {
-      position: relative; padding: 18px 45px; border-radius: 14px;
-      font-weight: 700; text-decoration: none; font-size: 15px;
-      color: #fff; background: var(--glass);
-      border: 1px solid var(--hair);
-      backdrop-filter: blur(15px);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative; padding: 20px 50px; border-radius: 16px;
+      font-weight: 700; text-decoration: none; font-size: 15px; color: #fff;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+      border: 1px solid var(--hair); backdrop-filter: blur(20px);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn:hover {
-      transform: translateY(-5px);
-      border-color: var(--accent);
-      background: rgba(255,255,255,0.08);
-      box-shadow: 0 20px 40px rgba(90, 140, 255, 0.15);
+      transform: translateY(-5px); border-color: var(--accent);
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(90, 140, 255, 0.1);
     }
 
-    footer { position: fixed; bottom: 40px; width: 100%; text-align: center; font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 3px; }
+    footer { position: fixed; bottom: 40px; width: 100%; text-align: center; font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 4px; }
   </style>
 </head>
 <body>
-
-  <div class="scene">
-    <div class="orb"></div>
-    <div class="drift" id="drift"></div>
-  </div>
-
-  <div class="topbar">
-    <a href="/cn/" class="lang-switcher">CN / EN</a>
-  </div>
-
+  <div class="scene"><div class="orb"></div><div class="drift" id="drift"></div></div>
+  <div class="topbar"><a href="/cn/" class="lang-switcher">CN / EN</a></div>
   <main class="wrap">
     <section class="hero">
-      <div class="tagline">Next-Gen Asset Intelligence</div>
+      <div style="font-size: 11px; color: var(--accent); font-weight: 800; letter-spacing: 6px; margin-bottom: 30px; text-shadow: 0 0 15px rgba(90, 140, 255, 0.4);">FUTURE OF ASSETS</div>
       <h1>HeritageX</h1>
-      <p class="subtitle">
-        Bridging Heritage Assets with <b>Global Sourcing</b> & <b>AI Precision</b>.
-      </p>
-
+      <p class="subtitle">Bridging Heritage Assets with <b>Global Sourcing</b> & <b>AI Precision</b></p>
       <div class="actions">
         <a class="btn" href="/explore/">Explore Assets</a>
         <a class="btn" href="/valuation/">AI Valuation</a>
       </div>
     </section>
   </main>
-
   <footer>© 2026 HERITAGEX SYDNEY</footer>
-
   <script>
-    // 鼠标跟随效果
     const drift = document.getElementById('drift');
     document.addEventListener('mousemove', (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 30;
-      const y = (e.clientY / window.innerHeight - 0.5) * 30;
+      const x = (e.clientX / window.innerWidth - 0.5) * 40;
+      const y = (e.clientY / window.innerHeight - 0.5) * 40;
       drift.style.transform = `translate(${x}px, ${y}px)`;
     });
   </script>
