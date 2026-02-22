@@ -1,89 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Explore Assets — HeritageX</title>
+  <title>HeritageX | AI 驱动的汽车资产专家</title>
   <style>
-    :root {
-      --bg: #050608; /* 与欢迎页完全一致的底色 */
-      --fg: #ffffff;
-      --fg-muted: rgba(255, 255, 255, 0.6);
-      --line: rgba(255, 255, 255, 0.1);
-      --card-bg: rgba(255, 255, 255, 0.02);
-    }
-
+    :root { --white: #ffffff; --soft-white: rgba(255, 255, 255, 0.8); }
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; color: var(--fg); background: var(--bg); }
+    html, body { height: 100%; margin: 0; font-family: "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif; background: #000; overflow: hidden; }
 
-    /* 背景微光感 */
-    .bg-overlay {
+    .hero-bg {
       position: fixed; inset: 0; z-index: -1;
-      background: radial-gradient(circle at 15% 25%, rgba(90, 140, 255, 0.05) 0%, transparent 40%),
-                  radial-gradient(circle at 85% 70%, rgba(180, 120, 255, 0.05) 0%, transparent 40%);
+      background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%), 
+                  url('https://images.unsplash.com/photo-1542362567-b05503f35259?auto=format&fit=crop&q=80&w=2400');
+      background-size: cover; background-position: center;
     }
 
-    /* 导航 */
-    .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 40px 60px; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
-    .logo { font-weight: 800; font-size: 20px; text-decoration: none; color: #fff; letter-spacing: -0.5px; }
-    .lang-switcher { font-size: 12px; font-weight: 600; color: #fff; text-decoration: none; padding: 6px 16px; border-radius: 4px; border: 1px solid var(--line); transition: 0.2s; }
-    .lang-switcher:hover { background: #fff; color: #000; }
+    .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 48px 64px; display: flex; justify-content: flex-end; z-index: 100; }
+    .lang-switcher { font-size: 12px; font-weight: 600; color: var(--white); text-decoration: none; letter-spacing: 1px; padding: 8px 20px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.25); }
+    .lang-switcher:hover { background: var(--white); color: #000; }
 
-    /* 页面标题 */
-    .wrap { max-width: 1200px; margin: 0 auto; padding: 160px 40px 100px; }
-    h1 { font-size: clamp(40px, 6vw, 72px); font-weight: 800; letter-spacing: -0.03em; margin: 0 0 16px; }
-    .desc { font-size: 18px; color: var(--fg-muted); margin-bottom: 64px; max-width: 600px; line-height: 1.5; }
+    .wrap { height: 100%; display: flex; align-items: center; justify-content: center; padding: 0 40px; }
+    .hero { max-width: 1000px; text-align: center; }
 
-    /* 资产网格 */
-    .grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-bottom: 80px; }
-    .card { 
-      background: var(--card-bg); border: 1px solid var(--line); border-radius: 12px; padding: 40px; 
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .card:hover { border-color: rgba(255,255,255,0.4); transform: translateY(-4px); background: rgba(255,255,255,0.04); }
-    .card h3 { font-size: 20px; margin: 0 0 20px; font-weight: 700; }
-    .card ul { padding: 0; list-style: none; margin: 0; color: var(--fg-muted); font-size: 15px; line-height: 2; }
-    .card li::before { content: "→"; margin-right: 12px; opacity: 0.5; }
+    h1 { font-size: clamp(64px, 12vw, 128px); font-weight: 800; letter-spacing: -0.02em; line-height: 1; margin: 0 0 24px; color: var(--white); }
+    
+    .subtitle { font-size: clamp(18px, 2.2vw, 28px); color: var(--soft-white); line-height: 1.5; letter-spacing: 0.2em; margin-bottom: 56px; font-weight: 300; }
+    .subtitle b { color: var(--white); font-weight: 600; }
 
-    /* 按钮 */
-    .btn-action { 
-      display: inline-block; padding: 18px 48px; border-radius: 6px; font-weight: 700; font-size: 16px; 
-      text-decoration: none; background: #fff; color: #000; transition: 0.2s; cursor: pointer; border: none;
-    }
-    .btn-action:hover { background: #e2e2e2; transform: translateY(-2px); }
+    .actions { display: flex; gap: 20px; justify-content: center; }
+    .btn { padding: 18px 50px; border-radius: 6px; font-weight: 600; font-size: 17px; text-decoration: none; transition: 0.3s; }
+    .btn-white { background: var(--white); color: #000; }
+    .btn-outline { background: rgba(0,0,0,0.3); color: var(--white); border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(8px); }
 
-    footer { padding: 60px 0; border-top: 1px solid var(--line); text-align: center; font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 2px; }
+    footer { position: fixed; bottom: 48px; width: 100%; text-align: center; font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 4px; }
   </style>
 </head>
 <body>
-  <div class="bg-overlay"></div>
-  <div class="topbar">
-    <a href="/" class="logo">HeritageX</a>
-    <a href="/cn/explore/" class="lang-switcher">CN / EN</a>
-  </div>
-
+  <div class="hero-bg"></div>
+  <div class="topbar"><a href="/" class="lang-switcher">CN / EN</a></div>
+  
   <main class="wrap">
-    <h1>Premier Assets.</h1>
-    <p class="desc">Exclusive sourcing and portfolio management for high-value automotive collectibles.</p>
-
-    <div class="grid">
-      <div class="card">
-        <h3>Heritage Plates</h3>
-        <ul><li>Historic Numeric Plates</li><li>Private Acquisition</li><li>Market Analysis</li></ul>
+    <section class="hero">
+      <h1>HeritageX</h1>
+      <p class="subtitle">连接稀缺文化资产，<br>驱动<b>全球寻源</b>与 <b>AI 精准估值</b>。</p>
+      <div class="actions">
+        <a class="btn btn-white" href="/cn/explore/">探索资产</a>
+        <a class="btn btn-outline" href="/cn/valuation/">AI 估值</a>
       </div>
-      <div class="card">
-        <h3>Classic Cars</h3>
-        <ul><li>Global Sourcing</li><li>Concierge Logistics</li><li>Authentication</li></ul>
-      </div>
-      <div class="card">
-        <h3>Rare OEM Parts</h3>
-        <ul><li>NOS Inventory Locating</li><li>Provenance Verification</li><li>Worldwide Shipping</li></ul>
-      </div>
-    </div>
-    
-    <div style="text-align: center;">
-      <button class="btn-action" onclick="alert('Inquiry form coming soon')">Submit Inquiry</button>
-    </div>
+    </section>
   </main>
 
   <footer>© 2026 HERITAGEX SYDNEY</footer>
