@@ -3,357 +3,127 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HeritageX</title>
-  <meta name="description" content="让历史车牌、经典汽车与全球寻源，在 AI 加持下，与澳洲合规进出口运营能力高效连接。" />
+  <title>HeritageX | AI 驱动的汽车资产专家</title>
   <style>
-    :root{
-      --bg:#07080c;
-      --fg:#fff;
-      --muted: rgba(255,255,255,.44);   /* ultra minimal */
-      --muted2: rgba(255,255,255,.34);
-      --hair: rgba(255,255,255,.10);
-      --hair2: rgba(255,255,255,.14);
-      --shadow: 0 20px 70px rgba(0,0,0,.60);
-      --shadowSoft: 0 10px 35px rgba(0,0,0,.35);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
-                   "Microsoft YaHei", "Noto Sans SC", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color:var(--fg);
-      background:var(--bg);
-      overflow-x:hidden;
+    :root {
+      --bg: #030407;
+      --fg: #fff;
+      --accent: #5a8cff;
+      --hair: rgba(255, 255, 255, .1);
+      --glass: rgba(255, 255, 255, .05);
     }
 
-    .bg{
-      position:fixed; inset:0; z-index:-3;
-      background:
-        radial-gradient(1200px 800px at 15% 10%, rgba(120,170,255,.20), transparent 60%),
-        radial-gradient(1000px 700px at 88% 18%, rgba(180,130,255,.16), transparent 60%),
-        radial-gradient(900px 650px at 24% 92%, rgba(90,255,220,.08), transparent 62%),
-        linear-gradient(180deg, #07080c 0%, #05060a 65%, #04050a 100%);
-      filter:saturate(112%);
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    html, body { height: 100%; margin: 0; background: var(--bg); color: var(--fg); font-family: "PingFang SC", "Microsoft YaHei", -apple-system, system-ui, sans-serif; overflow: hidden; }
+
+    /* --- 动态流光背景 (与英文版同步) --- */
+    .scene { position: fixed; inset: 0; z-index: -1; }
+    .orb {
+      position: absolute; top: 40%; left: 50%; width: 50vw; height: 50vw;
+      background: radial-gradient(circle, rgba(90, 140, 255, 0.12) 0%, transparent 70%);
+      transform: translate(-50%, -50%); filter: blur(60px);
+      animation: pulse 12s ease-in-out infinite alternate;
     }
-    .drift{
-      position:fixed; inset:-20%; z-index:-2;
-      background:
-        radial-gradient(700px 520px at 25% 35%, rgba(120,170,255,.18), transparent 60%),
-        radial-gradient(740px 560px at 78% 45%, rgba(180,130,255,.14), transparent 62%),
-        radial-gradient(620px 520px at 50% 85%, rgba(90,255,220,.08), transparent 65%);
-      opacity:.45;
-      animation: drift 18s ease-in-out infinite alternate;
-      transform: translate3d(0,0,0);
-      pointer-events:none;
+    .drift {
+      position: absolute; inset: -5%;
+      background: radial-gradient(circle at 80% 20%, rgba(180, 120, 255, 0.08) 0%, transparent 40%);
+      transition: transform 0.3s cubic-bezier(0.1, 0, 0.2, 1);
     }
-    @keyframes drift{
-      0%{ transform: translate(-2.5%, -1.2%) scale(1.02); filter: blur(0px); }
-      100%{ transform: translate(2.2%, 1.6%) scale(1.04); filter: blur(0.6px); }
+    @keyframes pulse { from { opacity: 0.4; transform: translate(-50%, -50%) scale(1); } to { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); } }
+
+    /* --- 统一 CN / EN 切换 (链接回主站) --- */
+    .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 40px; display: flex; justify-content: flex-end; z-index: 100; }
+    .lang-switcher {
+      font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--fg);
+      text-decoration: none; padding: 8px 20px; border-radius: 99px;
+      border: 1px solid var(--hair); background: var(--glass);
+      backdrop-filter: blur(10px); transition: 0.3s;
     }
-    .vignette{
-      position:fixed; inset:-2px; z-index:-1;
-      background:
-        radial-gradient(1200px 760px at 50% 44%, transparent 38%, rgba(0,0,0,.60) 84%),
-        radial-gradient(900px 520px at 50% 120%, rgba(0,0,0,.62), transparent 62%);
-      pointer-events:none;
-    }
-    .grain{
-      position:fixed; inset:0; z-index:-1;
-      pointer-events:none;
-      opacity:.06;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
-      mix-blend-mode: overlay;
+    .lang-switcher:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+
+    /* --- 主体内容 --- */
+    .wrap { height: 100%; display: flex; align-items: center; justify-content: center; }
+    .hero { text-align: center; width: 100%; max-width: 1100px; padding: 0 40px; }
+
+    .tagline {
+      font-size: 11px; font-weight: 700; color: var(--accent);
+      letter-spacing: 5px; text-transform: uppercase; margin-bottom: 24px;
     }
 
-    .topbar{
-      position:fixed; top:0; left:0; right:0;
-      padding:22px 24px;
-      display:flex; justify-content:flex-end;
-      z-index:20;
+    /* 统一大标题排版 */
+    h1 {
+      font-size: clamp(60px, 12vw, 130px);
+      font-weight: 800; letter-spacing: -0.02em; 
+      line-height: 1.1;
+      margin: 0 0 30px; 
+      padding-bottom: 15px;
+      background: linear-gradient(to bottom, #fff 50%, rgba(255,255,255,0.4));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
-    .lang{ position:relative; user-select:none; }
-    .lang-btn{
-      display:flex; align-items:center; gap:10px;
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid var(--hair);
-      background: rgba(255,255,255,.05);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: var(--shadowSoft);
-      color: rgba(255,255,255,.82);
-      cursor:pointer;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    .subtitle {
+      font-size: clamp(14px, 1.8vw, 18px); color: rgba(255,255,255,0.5);
+      line-height: 1.8; letter-spacing: 0.3em; /* 中文增加字间距更有高级感 */
+      margin-bottom: 60px; font-weight: 300;
     }
-    .lang-btn:hover{
-      transform: translateY(-1px);
-      border-color: var(--hair2);
-      background: rgba(255,255,255,.07);
-    }
-    .lang-label{ font-size:13px; letter-spacing:.2px; opacity:.9; }
-    .chev{ width:10px; height:10px; opacity:.8; }
-    .globe{ width:18px; height:18px; opacity:.95; filter: drop-shadow(0 6px 14px rgba(0,0,0,.35)); }
+    .subtitle b { color: #fff; font-weight: 600; }
 
-    .lang-menu{
-      position:absolute; top:46px; right:0;
-      min-width: 160px;
-      padding:8px;
-      border-radius:14px;
-      border:1px solid var(--hair);
-      background: rgba(10,12,16,.72);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: var(--shadow);
-      transform-origin: top right;
-      transform: translateY(-6px) scale(.985);
-      opacity:0; pointer-events:none;
-      transition: opacity .16s ease, transform .16s ease;
+    /* --- 对等磨砂按钮 --- */
+    .actions { display: flex; gap: 20px; justify-content: center; }
+    .btn {
+      position: relative; padding: 18px 45px; border-radius: 14px;
+      font-weight: 700; text-decoration: none; font-size: 16px;
+      color: #fff; background: var(--glass);
+      border: 1px solid var(--hair);
+      backdrop-filter: blur(15px);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      letter-spacing: 2px;
     }
-    .lang.open .lang-menu{
-      opacity:1; transform: translateY(0) scale(1);
-      pointer-events:auto;
-    }
-    .lang-item{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 10px;
-      border-radius:10px;
-      color: rgba(255,255,255,.86);
-      text-decoration:none;
-      font-size:13px;
-      border:1px solid transparent;
-      transition: background .14s ease, border-color .14s ease;
-    }
-    .lang-item:hover{
-      background: rgba(255,255,255,.06);
-      border-color: rgba(255,255,255,.08);
-    }
-    .tag{
-      font-size:11px;
-      color: rgba(255,255,255,.55);
-      border: 1px solid rgba(255,255,255,.10);
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.04);
+    .btn:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 20px 40px rgba(90, 140, 255, 0.15);
     }
 
-    .wrap{
-      min-height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 118px 20px 76px;
-    }
-    .hero{
-      text-align:center;
-      width:min(980px, 92vw);
-    }
-    h1{
-      margin:0 0 22px;
-      font-size: clamp(48px, 6vw, 76px);
-      letter-spacing: -0.02em;
-      line-height: 1.01;
-      font-weight: 800;
-      text-shadow: 0 18px 65px rgba(0,0,0,.60);
-    }
-
-    .subtitle{
-      margin:0 auto;
-      max-width: 620px;
-      font-size: clamp(14px, 2vw, 17px);
-      line-height: 2.05;
-      letter-spacing: .25px;
-      color: var(--muted);
-      text-shadow: 0 14px 45px rgba(0,0,0,.60);
-    }
-    .subtitle .line{
-      display:block;
-      background: linear-gradient(90deg, rgba(255,255,255,.60), rgba(255,255,255,.34));
-      -webkit-background-clip:text; background-clip:text;
-      color:transparent;
-    }
-
-    .actions{
-      display:flex;
-      gap:12px;
-      justify-content:center;
-      align-items:center;
-      margin-top: 46px;
-      flex-wrap:wrap;
-    }
-
-    .btn{
-      position:relative;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding: 12.5px 20px;
-      border-radius: 999px;
-      text-decoration:none;
-      font-weight: 700;
-      letter-spacing: .2px;
-      min-width: 150px;
-      transform: translateZ(0);
-      transition: transform .16s ease, opacity .16s ease;
-      isolation:isolate;
-    }
-    .btn-primary{
-      background:#fff;
-      color:#07080c;
-      box-shadow: 0 22px 65px rgba(0,0,0,.58);
-    }
-    .btn-primary:hover{ transform: translateY(-1px); opacity:.99; }
-
-    .btn-ghost{
-      color: rgba(255,255,255,.88);
-      background: rgba(255,255,255,.045);
-      border: 1px solid rgba(255,255,255,.14);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 12px 40px rgba(0,0,0,.35);
-    }
-    .btn-ghost::before{
-      content:"";
-      position:absolute; inset:-1px;
-      border-radius:999px;
-      padding:1px;
-      background: linear-gradient(140deg,
-        rgba(255,255,255,.22),
-        rgba(255,255,255,.06),
-        rgba(120,170,255,.10),
-        rgba(255,255,255,.04));
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity:.75;
-      pointer-events:none;
-    }
-    .btn-ghost::after{
-      content:"";
-      position:absolute; inset:0;
-      border-radius:999px;
-      background: linear-gradient(110deg,
-        transparent 0%,
-        rgba(255,255,255,.18) 18%,
-        rgba(255,255,255,.06) 32%,
-        transparent 55%);
-      transform: translateX(-130%);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity .18s ease;
-      filter: blur(.2px);
-    }
-    .btn-ghost:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.06);
-      border-color: rgba(255,255,255,.18);
-    }
-    .btn-ghost:hover::after{
-      opacity:.75;
-      animation: shimmer 1.35s ease forwards;
-    }
-    @keyframes shimmer{
-      0%{ transform: translateX(-130%); }
-      100%{ transform: translateX(130%); }
-    }
-
-    footer{
-      position:fixed;
-      left:0; right:0; bottom:0;
-      padding: 18px 22px;
-      text-align:center;
-      font-size: 12px;
-      color: rgba(255,255,255,.36);
-      letter-spacing:.3px;
-      pointer-events:none;
-    }
-
-    @media (max-width:480px){
-      .topbar{padding:16px 14px}
-      .wrap{padding-top:108px}
-      .subtitle{max-width: 330px}
-      .btn{min-width: 146px}
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      .drift{animation:none}
-      .btn-ghost:hover::after{animation:none}
-    }
+    footer { position: fixed; bottom: 40px; width: 100%; text-align: center; font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 3px; }
   </style>
 </head>
 <body>
-  <div class="bg"></div>
-  <div class="drift"></div>
-  <div class="grain"></div>
-  <div class="vignette"></div>
+
+  <div class="scene">
+    <div class="orb"></div>
+    <div class="drift" id="drift"></div>
+  </div>
 
   <div class="topbar">
-    <div class="lang" id="lang">
-      <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">
-        <svg class="globe" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="1.6" opacity=".95"/>
-          <path d="M2 12h20" stroke="currentColor" stroke-width="1.6" opacity=".7"/>
-          <path d="M12 2c3.2 3 5 6.5 5 10s-1.8 7-5 10c-3.2-3-5-6.5-5-10s1.8-7 5-10Z" stroke="currentColor" stroke-width="1.6" opacity=".7"/>
-        </svg>
-        <span class="lang-label">中文</span>
-        <svg class="chev" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-          <path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-
-      <div class="lang-menu" role="menu" aria-label="Language menu">
-        <a class="lang-item" href="/" role="menuitem">
-          English <span class="tag">EN</span>
-        </a>
-        <a class="lang-item" href="/cn/" role="menuitem">
-          中文 <span class="tag">CN</span>
-        </a>
-      </div>
-    </div>
+    <a href="/" class="lang-switcher">CN / EN</a>
   </div>
 
   <main class="wrap">
     <section class="hero">
+      <div class="tagline">下一代资产智能</div>
       <h1>HeritageX</h1>
-
       <p class="subtitle">
-        <span class="line">让历史车牌、经典汽车与全球寻源</span>
-        <span class="line">在 AI 加持下，与澳洲合规进出口运营能力高效连接。</span>
+        连接稀缺文化资产 · <b>全球寻源</b> · <b>AI 精准估值</b>
       </p>
 
       <div class="actions">
-        <a class="btn btn-primary" href="/#explore">探索</a>
-        <a class="btn btn-ghost" href="/valuation.html">估值</a>
+        <a class="btn" href="/cn/explore/">探索资产</a>
+        <a class="btn" href="/cn/valuation/">AI 估值</a>
       </div>
     </section>
   </main>
 
-  <footer>© 2026 HeritageX. All rights reserved.</footer>
+  <footer>© 2026 HERITAGEX SYDNEY</footer>
 
   <script>
-    (function () {
-      const lang = document.getElementById('lang');
-      const btn = document.getElementById('langBtn');
-
-      function closeMenu() {
-        lang.classList.remove('open');
-        btn.setAttribute('aria-expanded', 'false');
-      }
-
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const open = lang.classList.toggle('open');
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-
-      document.addEventListener('click', closeMenu);
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeMenu();
-      });
-    })();
+    const drift = document.getElementById('drift');
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 30;
+      const y = (e.clientY / window.innerHeight - 0.5) * 30;
+      drift.style.transform = `translate(${x}px, ${y}px)`;
+    });
   </script>
 </body>
 </html>
