@@ -1,103 +1,57 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HeritageX | AI Powered Automotive Assets</title>
+  <title>HeritageX | AI 驱动的汽车资产专家</title>
   <style>
-    :root {
-      --bg: #000000;
-      --fg: #ffffff;
-      --accent: #5a8cff;
-      --glass: rgba(255, 255, 255, 0.03);
-      --hair: rgba(255, 255, 255, 0.08);
-    }
-
+    /* 继承样式逻辑 */
+    :root { --white: #ffffff; --soft-white: rgba(255, 255, 255, 0.9); }
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    html, body { height: 100%; margin: 0; background: var(--bg); color: var(--fg); font-family: -apple-system, system-ui, sans-serif; overflow: hidden; }
+    html, body { height: 100%; margin: 0; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; overflow: hidden; }
 
-    /* --- 修复背景：增加深邃渐变层级 --- */
-    .scene { position: fixed; inset: 0; z-index: -1; }
-    .orb {
-      position: absolute; top: 45%; left: 50%; width: 70vw; height: 70vw;
-      background: radial-gradient(circle at center, rgba(90, 140, 255, 0.15) 0%, rgba(180, 120, 255, 0.05) 30%, transparent 70%);
-      transform: translate(-50%, -50%); filter: blur(80px);
-      animation: breathe 15s ease-in-out infinite alternate;
-    }
-    .drift {
-      position: absolute; inset: -10%;
-      background: radial-gradient(circle at 10% 10%, rgba(90, 255, 220, 0.03) 0%, transparent 40%),
-                  radial-gradient(circle at 90% 80%, rgba(180, 120, 255, 0.03) 0%, transparent 40%);
-      transition: transform 0.5s cubic-bezier(0.1, 0, 0.2, 1);
-    }
-    @keyframes breathe { from { opacity: 0.3; transform: translate(-50%, -50%) scale(1); } to { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); } }
-
-    /* --- 导航 --- */
-    .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 40px; display: flex; justify-content: flex-end; z-index: 100; }
-    .lang-switcher { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #fff; text-decoration: none; padding: 10px 24px; border-radius: 99px; border: 1px solid var(--hair); background: var(--glass); backdrop-filter: blur(20px); transition: 0.4s; }
-    .lang-switcher:hover { border-color: var(--accent); background: rgba(255,255,255,0.1); box-shadow: 0 0 20px rgba(90, 140, 255, 0.2); }
-
-    /* --- 内容排版 --- */
-    .wrap { height: 100%; display: flex; align-items: center; justify-content: center; }
-    .hero { text-align: center; width: 100%; max-width: 1200px; padding: 0 40px; }
-
-    /* 品牌名：修复 g 的显示，增加柔和渐变 */
-    h1 {
-      font-size: clamp(64px, 12vw, 140px); font-weight: 800; letter-spacing: -0.04em; 
-      line-height: 1.2; margin: 0 0 10px; padding-bottom: 10px;
-      background: linear-gradient(180deg, #FFFFFF 30%, #999999 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    .hero-bg {
+      position: fixed; inset: 0; z-index: -1;
+      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), 
+                  url('https://images.unsplash.com/photo-1542362567-b05503f35259?auto=format&fit=crop&q=80&w=2000');
+      background-size: cover; background-position: center; filter: brightness(0.85);
     }
 
-    /* Slogan：修复亮暗不均，采用统一的半透明高级白 */
-    .subtitle {
-      font-size: clamp(14px, 1.8vw, 18px); 
-      color: rgba(255, 255, 255, 0.6); /* 统一色调，避免一半亮一半暗 */
-      line-height: 1.6; letter-spacing: 0.15em; text-transform: uppercase;
-      margin-bottom: 60px;
-    }
-    .subtitle b { color: #ffffff; font-weight: 600; }
+    .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 40px 60px; display: flex; justify-content: flex-end; z-index: 100; }
+    .lang-switcher { font-size: 13px; font-weight: 600; color: var(--white); text-decoration: none; padding: 8px 20px; border-radius: 99px; border: 1.5px solid rgba(255,255,255,0.4); background: rgba(0,0,0,0.2); backdrop-filter: blur(5px); }
 
-    /* --- 按钮：完全对等的高级感 --- */
-    .actions { display: flex; gap: 24px; justify-content: center; }
-    .btn {
-      position: relative; padding: 20px 50px; border-radius: 16px;
-      font-weight: 700; text-decoration: none; font-size: 15px; color: #fff;
-      background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
-      border: 1px solid var(--hair); backdrop-filter: blur(20px);
-      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .btn:hover {
-      transform: translateY(-5px); border-color: var(--accent);
-      background: rgba(255,255,255,0.1);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(90, 140, 255, 0.1);
-    }
+    .wrap { height: 100%; display: flex; align-items: center; padding-left: 8%; }
+    .hero { max-width: 800px; text-align: left; }
 
-    footer { position: fixed; bottom: 40px; width: 100%; text-align: center; font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 4px; }
+    .tagline { font-size: 14px; font-weight: 700; color: var(--white); letter-spacing: 4px; margin-bottom: 24px; }
+    h1 { font-size: clamp(60px, 8vw, 110px); font-weight: 800; letter-spacing: -0.01em; line-height: 1.1; margin: 0 0 20px; color: var(--white); }
+    
+    .subtitle { font-size: clamp(20px, 2.5vw, 32px); color: var(--soft-white); line-height: 1.5; margin-bottom: 48px; font-weight: 300; letter-spacing: 1px; }
+
+    .actions { display: flex; gap: 16px; }
+    .btn { padding: 18px 45px; border-radius: 8px; font-weight: 700; font-size: 17px; text-decoration: none; transition: 0.3s; }
+    .btn-primary { background: var(--white); color: #000; }
+    .btn-secondary { background: rgba(0,0,0,0.4); color: var(--white); border: 1.5px solid rgba(255,255,255,0.5); backdrop-filter: blur(10px); }
+
+    footer { position: fixed; bottom: 40px; left: 8%; font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 2px; }
   </style>
 </head>
 <body>
-  <div class="scene"><div class="orb"></div><div class="drift" id="drift"></div></div>
-  <div class="topbar"><a href="/cn/" class="lang-switcher">CN / EN</a></div>
+  <div class="hero-bg"></div>
+  <div class="topbar"><a href="/" class="lang-switcher">CN / EN</a></div>
+  
   <main class="wrap">
     <section class="hero">
-      <div style="font-size: 11px; color: var(--accent); font-weight: 800; letter-spacing: 6px; margin-bottom: 30px; text-shadow: 0 0 15px rgba(90, 140, 255, 0.4);">FUTURE OF ASSETS</div>
+      <div class="tagline">下一代资产智能</div>
       <h1>HeritageX</h1>
-      <p class="subtitle">Bridging Heritage Assets with <b>Global Sourcing</b> & <b>AI Precision</b></p>
+      <p class="subtitle">连接稀缺文化资产，<br>驱动全球寻源与 AI 精准估值。</p>
       <div class="actions">
-        <a class="btn" href="/explore/">Explore Assets</a>
-        <a class="btn" href="/valuation/">AI Valuation</a>
+        <a class="btn btn-primary" href="/cn/explore/">探索资产</a>
+        <a class="btn btn-secondary" href="/cn/valuation/">AI 估值</a>
       </div>
     </section>
   </main>
+
   <footer>© 2026 HERITAGEX SYDNEY</footer>
-  <script>
-    const drift = document.getElementById('drift');
-    document.addEventListener('mousemove', (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 40;
-      const y = (e.clientY / window.innerHeight - 0.5) * 40;
-      drift.style.transform = `translate(${x}px, ${y}px)`;
-    });
-  </script>
 </body>
 </html>
