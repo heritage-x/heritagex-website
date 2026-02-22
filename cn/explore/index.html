@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>探索资产 — HeritageX</title>
+  <style>
+    :root {
+      --bg: #050608;
+      --fg: #ffffff;
+      --accent: #5a8cff;
+      --accent-gradient: linear-gradient(135deg, #5a8cff 0%, #b478ff 100%);
+      --muted: rgba(255, 255, 255, .6);
+      --line: rgba(255, 255, 255, .08);
+      --card-bg: rgba(255, 255, 255, .03);
+    }
+
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      background: 
+        radial-gradient(circle at 15% 25%, rgba(90, 140, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 70%, rgba(180, 120, 255, 0.12) 0%, transparent 40%),
+        var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 80px 24px; }
+
+    /* --- 导航 --- */
+    nav { position: absolute; top: 0; left: 0; right: 0; padding: 30px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-weight: 800; font-size: 20px; letter-spacing: -0.5px; text-decoration: none; color: #fff; }
+    .lang-switch { font-size: 13px; color: var(--muted); text-decoration: none; border: 1px solid var(--line); padding: 6px 14px; border-radius: 99px; transition: 0.3s; }
+    .lang-switch:hover { background: var(--line); color: #fff; }
+
+    /* --- 主视觉 --- */
+    .hero { text-align: center; margin-bottom: 80px; }
+    .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 24px; background: linear-gradient(to bottom, #fff 60%, rgba(255,255,255,0.6)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { max-width: 650px; margin: 0 auto 40px; font-size: 18px; color: var(--muted); line-height: 1.8; }
+
+    /* --- 按钮 --- */
+    .btn-main {
+      position: relative; display: inline-flex; align-items: center; padding: 16px 40px;
+      background: #fff; color: #000; border-radius: 14px; text-decoration: none;
+      font-weight: 700; font-size: 16px; transition: 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+    .btn-main:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(90, 140, 255, 0.25); }
+
+    /* --- 资产网格 --- */
+    .grid { display: grid; gap: 24px; grid-template-columns: repeat(3, 1fr); margin-bottom: 100px; }
+    .card {
+      position: relative; padding: 40px 30px; border-radius: 24px;
+      background: var(--card-bg); border: 1px solid var(--line);
+      backdrop-filter: blur(20px); transition: 0.4s ease;
+    }
+    .card:hover { transform: translateY(-8px); border-color: rgba(90, 140, 255, 0.4); background: rgba(255,255,255,0.06); }
+    .card h2 { font-size: 20px; font-weight: 700; margin-bottom: 20px; color: #fff; }
+    .card ul { padding: 0; list-style: none; margin: 0; }
+    .card li { margin-bottom: 14px; color: var(--muted); font-size: 15px; display: flex; align-items: center; }
+    .card li::before { content: ""; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-right: 12px; opacity: 0.6; }
+
+    /* --- 弹窗样式 --- */
+    .modal {
+      position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); z-index: 9999; padding: 20px;
+    }
+    .modal.active { display: flex; animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .modal-content {
+      width: 100%; max-width: 480px; background: #0f1115; border: 1px solid var(--line);
+      border-radius: 28px; padding: 40px;
+    }
+    .modal-content h3 { font-size: 22px; font-weight: 800; margin-bottom: 25px; }
+
+    .input-group { margin-bottom: 20px; }
+    .input-group label { display: block; font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+    
+    select, input, textarea {
+      width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+      padding: 14px 16px; border-radius: 12px; color: #fff; font-size: 15px;
+    }
+    textarea { min-height: 110px; resize: none; }
+    .hint { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 8px; line-height: 1.5; }
+
+    .modal-actions { display: flex; gap: 12px; margin-top: 30px; }
+    .btn-submit { flex: 2; background: #fff; color: #000; border: none; padding: 16px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+    .btn-close { flex: 1; background: transparent; color: #fff; border: 1px solid var(--line); padding: 16px; border-radius: 12px; cursor: pointer; }
+
+    @keyframes modalIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 800px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/cn/" class="logo">HeritageX</a>
+    <a href="/explore/" class="lang-switch">English</a>
+  </nav>
+
+  <div class="container">
+    <section class="hero">
+      <h1>经典资产 · 全球链接</h1>
+      <p>为您提供澳洲历史车牌、经典名车及原厂稀有零部件的专业寻源、交易与跨境物流服务。</p>
+      <button class="btn-main" onclick="toggleModal(true)">提交您的需求</button>
+    </section>
+
+    <div class="grid">
+      <div class="card">
+        <h2>经典名车</h2>
+        <ul>
+          <li>全球名车寻源网络</li>
+          <li>进口与跨境物流管理</li>
+          <li>私人收藏资产顾问</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>历史车牌</h2>
+        <ul>
+          <li>澳洲纯数字车牌交易</li>
+          <li>具投资价值的数字资产</li>
+          <li>安全的所有权转让服务</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>稀有零件</h2>
+        <ul>
+          <li>停产原厂 (OEM) 库存</li>
+          <li>全球供应链零部件代采</li>
+          <li>高标准质量检测寻源</li>
+        </ul>
+      </div>
+    </div>
+
+    <section style="text-align: center; opacity: 0.5; font-size: 12px;">
+      © 2026 HeritageX. 每一笔交易，尽显精准。
+    </section>
+  </div>
+
+  <div class="modal" id="inquiryModal">
+    <div class="modal-content">
+      <h3>提交您的需求</h3>
+      
+      <div class="input-group">
+        <label>资产类别</label>
+        <select id="cat">
+          <option>历史车牌 (Heritage Plates)</option>
+          <option>经典/稀有车型 (Classic Cars)</option>
+          <option>原厂零件寻源 (OEM Parts)</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label>需求类型</label>
+        <select id="type">
+          <option>求购 / 寻源需求</option>
+          <option>寄卖 / 出售意向</option>
+          <option>资产价值评估</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label>具体描述</label>
+        <textarea id="desc" placeholder="请输入细节（如车型、年份、车牌号段或零件号）..."></textarea>
+        <div class="hint">提示：描述越具体，我们的反馈速度越快。</div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-close" onclick="toggleModal(false)">关闭</button>
+        <button class="btn-submit" onclick="sendInquiry()">发送需求</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const WA_PHONE = "61499987789";
+
+    function toggleModal(show) {
+      const m = document.getElementById('inquiryModal');
+      m.classList.toggle('active', show);
+      document.body.style.overflow = show ? 'hidden' : 'auto';
+    }
+
+    function sendInquiry() {
+      const cat = document.getElementById('cat').value;
+      const type = document.getElementById('type').value;
+      const desc = document.getElementById('desc').value;
+
+      if(!desc) return alert("请输入您的具体需求。");
+
+      // 为 WhatsApp 格式化中文消息
+      const text = `*HeritageX 官网需求通知*%0A%0A` +
+                   `*类别:* ${cat}%0A` +
+                   `*类型:* ${type}%0A` +
+                   `*详细内容:* ${desc}`;
+
+      window.open(`https://wa.me/${WA_PHONE}?text=${text}`, '_blank');
+      toggleModal(false);
+    }
+
+    window.onclick = function(e) {
+      if (e.target.className === 'modal active') toggleModal(false);
+    }
+  </script>
+</body>
+</html>
