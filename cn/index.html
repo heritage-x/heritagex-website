@@ -5,125 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HeritageX | AI 驱动的汽车资产专家</title>
   <style>
-    :root {
-      --bg: #030407;
-      --fg: #fff;
-      --accent: #5a8cff;
-      --hair: rgba(255, 255, 255, .1);
-      --glass: rgba(255, 255, 255, .05);
-    }
-
+    :root { --white: #ffffff; --soft-white: rgba(255, 255, 255, 0.8); }
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    html, body { height: 100%; margin: 0; background: var(--bg); color: var(--fg); font-family: "PingFang SC", "Microsoft YaHei", -apple-system, system-ui, sans-serif; overflow: hidden; }
+    html, body { height: 100%; margin: 0; font-family: "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif; background: #000; overflow: hidden; }
 
-    /* --- 动态流光背景 (与英文版同步) --- */
-    .scene { position: fixed; inset: 0; z-index: -1; }
-    .orb {
-      position: absolute; top: 40%; left: 50%; width: 50vw; height: 50vw;
-      background: radial-gradient(circle, rgba(90, 140, 255, 0.12) 0%, transparent 70%);
-      transform: translate(-50%, -50%); filter: blur(60px);
-      animation: pulse 12s ease-in-out infinite alternate;
-    }
-    .drift {
-      position: absolute; inset: -5%;
-      background: radial-gradient(circle at 80% 20%, rgba(180, 120, 255, 0.08) 0%, transparent 40%);
-      transition: transform 0.3s cubic-bezier(0.1, 0, 0.2, 1);
-    }
-    @keyframes pulse { from { opacity: 0.4; transform: translate(-50%, -50%) scale(1); } to { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); } }
-
-    /* --- 统一 CN / EN 切换 (链接回主站) --- */
-    .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 40px; display: flex; justify-content: flex-end; z-index: 100; }
-    .lang-switcher {
-      font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--fg);
-      text-decoration: none; padding: 8px 20px; border-radius: 99px;
-      border: 1px solid var(--hair); background: var(--glass);
-      backdrop-filter: blur(10px); transition: 0.3s;
-    }
-    .lang-switcher:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
-
-    /* --- 主体内容 --- */
-    .wrap { height: 100%; display: flex; align-items: center; justify-content: center; }
-    .hero { text-align: center; width: 100%; max-width: 1100px; padding: 0 40px; }
-
-    .tagline {
-      font-size: 11px; font-weight: 700; color: var(--accent);
-      letter-spacing: 5px; text-transform: uppercase; margin-bottom: 24px;
+    .hero-bg {
+      position: fixed; inset: 0; z-index: -1;
+      background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%), 
+                  url('https://images.unsplash.com/photo-1542362567-b05503f35259?auto=format&fit=crop&q=80&w=2400');
+      background-size: cover; background-position: center;
     }
 
-    /* 统一大标题排版 */
-    h1 {
-      font-size: clamp(60px, 12vw, 130px);
-      font-weight: 800; letter-spacing: -0.02em; 
-      line-height: 1.1;
-      margin: 0 0 30px; 
-      padding-bottom: 15px;
-      background: linear-gradient(to bottom, #fff 50%, rgba(255,255,255,0.4));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 48px 64px; display: flex; justify-content: flex-end; z-index: 100; }
+    .lang-switcher { font-size: 12px; font-weight: 600; color: var(--white); text-decoration: none; letter-spacing: 1px; padding: 8px 20px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.25); }
+    .lang-switcher:hover { background: var(--white); color: #000; }
 
-    .subtitle {
-      font-size: clamp(14px, 1.8vw, 18px); color: rgba(255,255,255,0.5);
-      line-height: 1.8; letter-spacing: 0.3em; /* 中文增加字间距更有高级感 */
-      margin-bottom: 60px; font-weight: 300;
-    }
-    .subtitle b { color: #fff; font-weight: 600; }
+    .wrap { height: 100%; display: flex; align-items: center; justify-content: center; padding: 0 40px; }
+    .hero { max-width: 1000px; text-align: center; }
 
-    /* --- 对等磨砂按钮 --- */
+    h1 { font-size: clamp(64px, 12vw, 128px); font-weight: 800; letter-spacing: -0.02em; line-height: 1; margin: 0 0 24px; color: var(--white); }
+    
+    .subtitle { font-size: clamp(18px, 2.2vw, 28px); color: var(--soft-white); line-height: 1.5; letter-spacing: 0.2em; margin-bottom: 56px; font-weight: 300; }
+    .subtitle b { color: var(--white); font-weight: 600; }
+
     .actions { display: flex; gap: 20px; justify-content: center; }
-    .btn {
-      position: relative; padding: 18px 45px; border-radius: 14px;
-      font-weight: 700; text-decoration: none; font-size: 16px;
-      color: #fff; background: var(--glass);
-      border: 1px solid var(--hair);
-      backdrop-filter: blur(15px);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      letter-spacing: 2px;
-    }
-    .btn:hover {
-      transform: translateY(-5px);
-      border-color: var(--accent);
-      background: rgba(255,255,255,0.08);
-      box-shadow: 0 20px 40px rgba(90, 140, 255, 0.15);
-    }
+    .btn { padding: 18px 50px; border-radius: 6px; font-weight: 600; font-size: 17px; text-decoration: none; transition: 0.3s; }
+    .btn-white { background: var(--white); color: #000; }
+    .btn-outline { background: rgba(0,0,0,0.3); color: var(--white); border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(8px); }
 
-    footer { position: fixed; bottom: 40px; width: 100%; text-align: center; font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 3px; }
+    footer { position: fixed; bottom: 48px; width: 100%; text-align: center; font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 4px; }
   </style>
 </head>
 <body>
-
-  <div class="scene">
-    <div class="orb"></div>
-    <div class="drift" id="drift"></div>
-  </div>
-
-  <div class="topbar">
-    <a href="/" class="lang-switcher">CN / EN</a>
-  </div>
-
+  <div class="hero-bg"></div>
+  <div class="topbar"><a href="/" class="lang-switcher">CN / EN</a></div>
+  
   <main class="wrap">
     <section class="hero">
-      <div class="tagline">下一代资产智能</div>
       <h1>HeritageX</h1>
-      <p class="subtitle">
-        连接稀缺文化资产 · <b>全球寻源</b> · <b>AI 精准估值</b>
-      </p>
-
+      <p class="subtitle">连接稀缺文化资产，<br>驱动<b>全球寻源</b>与 <b>AI 精准估值</b>。</p>
       <div class="actions">
-        <a class="btn" href="/cn/explore/">探索资产</a>
-        <a class="btn" href="/cn/valuation/">AI 估值</a>
+        <a class="btn btn-white" href="/cn/explore/">探索资产</a>
+        <a class="btn btn-outline" href="/cn/valuation/">AI 估值</a>
       </div>
     </section>
   </main>
 
   <footer>© 2026 HERITAGEX SYDNEY</footer>
-
-  <script>
-    const drift = document.getElementById('drift');
-    document.addEventListener('mousemove', (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 30;
-      const y = (e.clientY / window.innerHeight - 0.5) * 30;
-      drift.style.transform = `translate(${x}px, ${y}px)`;
-    });
-  </script>
 </body>
 </html>
