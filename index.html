@@ -1,53 +1,87 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HeritageX | AI 驱动的汽车资产专家</title>
+  <title>HeritageX | Global Automotive Asset Intelligence</title>
   <style>
-    /* 继承样式逻辑 */
-    :root { --white: #ffffff; --soft-white: rgba(255, 255, 255, 0.9); }
-    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    html, body { height: 100%; margin: 0; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; overflow: hidden; }
-
-    .hero-bg {
-      position: fixed; inset: 0; z-index: -1;
-      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), 
-                  url('https://images.unsplash.com/photo-1542362567-b05503f35259?auto=format&fit=crop&q=80&w=2000');
-      background-size: cover; background-position: center; filter: brightness(0.85);
+    :root {
+      --white: #ffffff;
+      --soft-white: rgba(255, 255, 255, 0.85);
+      --accent: #ffffff;
     }
 
-    .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 40px 60px; display: flex; justify-content: flex-end; z-index: 100; }
-    .lang-switcher { font-size: 13px; font-weight: 600; color: var(--white); text-decoration: none; padding: 8px 20px; border-radius: 99px; border: 1.5px solid rgba(255,255,255,0.4); background: rgba(0,0,0,0.2); backdrop-filter: blur(5px); }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    html, body { height: 100%; margin: 0; font-family: -apple-system, system-ui, "Helvetica Neue", sans-serif; overflow: hidden; }
 
-    .wrap { height: 100%; display: flex; align-items: center; padding-left: 8%; }
+    /* --- Shopify 风格：实景大图背景 --- */
+    .hero-bg {
+      position: fixed; inset: 0; z-index: -1;
+      /* 这里使用了一张高质量的经典跑车在街道上的实拍图 */
+      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), 
+                  url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=2000');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.8); /* 稍微降低亮度确保文字清晰 */
+    }
+
+    /* --- 极简导航 --- */
+    .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 40px 60px; display: flex; justify-content: flex-end; z-index: 100; }
+    .lang-switcher {
+      font-size: 13px; font-weight: 600; color: var(--white); text-decoration: none;
+      padding: 8px 20px; border-radius: 99px; border: 1.5px solid rgba(255,255,255,0.4);
+      transition: 0.3s; background: rgba(0,0,0,0.2); backdrop-filter: blur(5px);
+    }
+    .lang-switcher:hover { background: var(--white); color: #000; }
+
+    /* --- 内容排版：Shopify 级呼吸感 --- */
+    .wrap { height: 100%; display: flex; align-items: center; padding-left: 8%; } /* 采用左对齐或居中，Shopify 常用左对齐 */
     .hero { max-width: 800px; text-align: left; }
 
-    .tagline { font-size: 14px; font-weight: 700; color: var(--white); letter-spacing: 4px; margin-bottom: 24px; }
-    h1 { font-size: clamp(60px, 8vw, 110px); font-weight: 800; letter-spacing: -0.01em; line-height: 1.1; margin: 0 0 20px; color: var(--white); }
-    
-    .subtitle { font-size: clamp(20px, 2.5vw, 32px); color: var(--soft-white); line-height: 1.5; margin-bottom: 48px; font-weight: 300; letter-spacing: 1px; }
+    .tagline { 
+      font-size: 14px; font-weight: 700; color: var(--white); 
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px; 
+    }
 
+    /* 修复 g 裁切，采用纯白粗体 */
+    h1 {
+      font-size: clamp(60px, 8vw, 110px); font-weight: 800; letter-spacing: -0.03em;
+      line-height: 1.05; margin: 0 0 20px; padding-bottom: 10px; color: var(--white);
+    }
+
+    /* Slogan 修复：彻底解决亮暗不均，采用通透白 */
+    .subtitle {
+      font-size: clamp(18px, 2.2vw, 26px); color: var(--soft-white);
+      line-height: 1.4; margin-bottom: 48px; max-width: 650px;
+      font-weight: 400;
+    }
+
+    /* --- Shopify 标志性按钮 --- */
     .actions { display: flex; gap: 16px; }
-    .btn { padding: 18px 45px; border-radius: 8px; font-weight: 700; font-size: 17px; text-decoration: none; transition: 0.3s; }
+    .btn {
+      padding: 16px 36px; border-radius: 8px; font-weight: 700; font-size: 16px;
+      text-decoration: none; transition: 0.3s;
+    }
     .btn-primary { background: var(--white); color: #000; }
+    .btn-primary:hover { background: #f0f0f0; transform: translateY(-2px); }
     .btn-secondary { background: rgba(0,0,0,0.4); color: var(--white); border: 1.5px solid rgba(255,255,255,0.5); backdrop-filter: blur(10px); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: var(--white); }
 
-    footer { position: fixed; bottom: 40px; left: 8%; font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 2px; }
+    footer { position: fixed; bottom: 40px; left: 8%; font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 1px; }
   </style>
 </head>
 <body>
   <div class="hero-bg"></div>
-  <div class="topbar"><a href="/" class="lang-switcher">CN / EN</a></div>
+  <div class="topbar"><a href="/cn/" class="lang-switcher">CN / EN</a></div>
   
   <main class="wrap">
     <section class="hero">
-      <div class="tagline">下一代资产智能</div>
+      <div class="tagline">Next-Gen Asset Intelligence</div>
       <h1>HeritageX</h1>
-      <p class="subtitle">连接稀缺文化资产，<br>驱动全球寻源与 AI 精准估值。</p>
+      <p class="subtitle">Bridging heritage assets with global sourcing and AI precision.</p>
       <div class="actions">
-        <a class="btn btn-primary" href="/cn/explore/">探索资产</a>
-        <a class="btn btn-secondary" href="/cn/valuation/">AI 估值</a>
+        <a class="btn btn-primary" href="/explore/">Explore Assets</a>
+        <a class="btn btn-secondary" href="/valuation/">AI Valuation</a>
       </div>
     </section>
   </main>
