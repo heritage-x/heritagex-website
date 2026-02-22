@@ -3,54 +3,218 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HeritageX | AI 驱动的汽车资产专家</title>
-  <style>
-    :root { --white: #ffffff; --soft-white: rgba(255, 255, 255, 0.8); }
-    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    html, body { height: 100%; margin: 0; font-family: "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif; background: #000; overflow: hidden; }
+  <title>HeritageX</title>
+  <meta name="description" content="经典车牌 · 经典汽车 · 稀缺配件。全球采购与 AI 精准评估。" />
 
-    .hero-bg {
-      position: fixed; inset: 0; z-index: -1;
-      background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%), 
-                  url('https://images.unsplash.com/photo-1542362567-b05503f35259?auto=format&fit=crop&q=80&w=2400');
-      background-size: cover; background-position: center;
+  <style>
+    :root{
+      --bg:#05060a;
+      --fg:#ffffff;
+
+      --muted: rgba(255,255,255,.42);
+      --muted2: rgba(255,255,255,.28);
+
+      --hair: rgba(255,255,255,.10);
+      --hair2: rgba(255,255,255,.16);
+
+      --shadow: 0 22px 80px rgba(0,0,0,.64);
+      --shadowSoft: 0 10px 35px rgba(0,0,0,.38);
     }
 
-    .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 48px 64px; display: flex; justify-content: flex-end; z-index: 100; }
-    .lang-switcher { font-size: 12px; font-weight: 600; color: var(--white); text-decoration: none; letter-spacing: 1px; padding: 8px 20px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.25); }
-    .lang-switcher:hover { background: var(--white); color: #000; }
+    *{ box-sizing:border-box; -webkit-font-smoothing: antialiased; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "PingFang SC",
+        "Hiragino Sans GB",
+        "Microsoft YaHei",
+        "Segoe UI",
+        sans-serif;
+      color:var(--fg);
+      background:var(--bg);
+      overflow:hidden;
+    }
 
-    .wrap { height: 100%; display: flex; align-items: center; justify-content: center; padding: 0 40px; }
-    .hero { max-width: 1000px; text-align: center; }
+    /* ========= 背景层次（高级渐变） ========= */
+    .bg{
+      position:fixed; inset:0; z-index:-6;
+      background:
+        linear-gradient(180deg, #05060a 0%, #070812 55%, #04050a 100%),
+        linear-gradient(135deg,
+          rgba(125,170,255,.08) 0%,
+          rgba(125,170,255,0) 35%,
+          rgba(190,135,255,.06) 70%,
+          rgba(190,135,255,0) 100%),
+        linear-gradient(90deg,
+          rgba(0,0,0,.25) 0%,
+          rgba(255,255,255,.018) 46%,
+          rgba(0,0,0,.22) 100%);
+    }
 
-    h1 { font-size: clamp(64px, 12vw, 128px); font-weight: 800; letter-spacing: -0.02em; line-height: 1; margin: 0 0 24px; color: var(--white); }
-    
-    .subtitle { font-size: clamp(18px, 2.2vw, 28px); color: var(--soft-white); line-height: 1.5; letter-spacing: 0.2em; margin-bottom: 56px; font-weight: 300; }
-    .subtitle b { color: var(--white); font-weight: 600; }
+    .bloom{
+      position:fixed; inset:-18%; z-index:-5;
+      background:
+        radial-gradient(1100px 820px at 18% 18%, rgba(110,160,255,.20), transparent 62%),
+        radial-gradient(980px 760px at 86% 22%, rgba(185,130,255,.16), transparent 64%),
+        radial-gradient(1400px 980px at 55% 45%, rgba(255,255,255,.03), transparent 62%);
+      opacity:.55;
+      animation: drift 18s ease-in-out infinite alternate;
+      pointer-events:none;
+    }
 
-    .actions { display: flex; gap: 20px; justify-content: center; }
-    .btn { padding: 18px 50px; border-radius: 6px; font-weight: 600; font-size: 17px; text-decoration: none; transition: 0.3s; }
-    .btn-white { background: var(--white); color: #000; }
-    .btn-outline { background: rgba(0,0,0,0.3); color: var(--white); border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(8px); }
+    @keyframes drift{
+      0%   { transform: translate(-2%, -1%) scale(1.03); }
+      100% { transform: translate(2%, 1.5%) scale(1.06); }
+    }
 
-    footer { position: fixed; bottom: 48px; width: 100%; text-align: center; font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 4px; }
+    .vignette{
+      position:fixed; inset:-2px; z-index:-4;
+      background:
+        radial-gradient(1200px 760px at 50% 42%,
+          rgba(0,0,0,.08) 0%,
+          transparent 34%,
+          rgba(0,0,0,.72) 88%);
+      pointer-events:none;
+    }
+
+    /* ========= 顶部语言切换 ========= */
+    .topbar{
+      position:fixed; top:0; left:0; right:0;
+      padding:22px 24px;
+      display:flex; justify-content:flex-end;
+      z-index:20;
+    }
+
+    .lang-btn{
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--hair);
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(14px);
+      color: rgba(255,255,255,.82);
+      text-decoration:none;
+      font-size:13px;
+      transition:.2s;
+    }
+    .lang-btn:hover{
+      background: rgba(255,255,255,.06);
+      border-color: var(--hair2);
+    }
+
+    /* ========= 布局 ========= */
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 118px 20px 76px;
+      text-align:center;
+    }
+
+    h1{
+      margin:0 0 22px;
+      font-size: clamp(54px, 6vw, 88px);
+      letter-spacing:-0.02em;
+      font-weight:700;
+    }
+
+    .subtitle{
+      margin:0 auto 48px;
+      max-width:720px;
+      font-size: clamp(16px, 1.8vw, 20px);
+      line-height:1.9;
+      color:var(--muted);
+    }
+
+    /* ========= 按钮 ========= */
+    .actions{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px 28px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:600;
+      min-width:160px;
+      transition:.2s;
+    }
+
+    .btn-primary{
+      color:#05060a;
+      background: linear-gradient(180deg, #ffffff 0%, #f1f1f1 100%);
+      box-shadow:0 20px 60px rgba(0,0,0,.55);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-ghost{
+      color:#fff;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(14px);
+    }
+
+    .btn-ghost:hover{
+      background:rgba(255,255,255,.06);
+      transform:translateY(-1px);
+    }
+
+    footer{
+      position:fixed; left:0; right:0; bottom:0;
+      padding: 22px 22px 26px;
+      text-align:center;
+      font-size: 12px;
+      color: rgba(255,255,255,.26);
+      letter-spacing:.12em;
+    }
+
+    @media (max-width:480px){
+      .subtitle{ font-size:15px; }
+    }
   </style>
 </head>
+
 <body>
-  <div class="hero-bg"></div>
-  <div class="topbar"><a href="/" class="lang-switcher">CN / EN</a></div>
-  
+
+  <div class="bg"></div>
+  <div class="bloom"></div>
+  <div class="vignette"></div>
+
+  <div class="topbar">
+    <a href="/" class="lang-btn">EN</a>
+  </div>
+
   <main class="wrap">
-    <section class="hero">
+    <div>
       <h1>HeritageX</h1>
-      <p class="subtitle">连接稀缺文化资产，<br>驱动<b>全球寻源</b>与 <b>AI 精准估值</b>。</p>
+
+      <p class="subtitle">
+        连接经典车牌、经典汽车与稀缺配件资源<br>
+        以全球采购能力与 AI 精准评估为核心
+      </p>
+
       <div class="actions">
-        <a class="btn btn-white" href="/cn/explore/">探索资产</a>
-        <a class="btn btn-outline" href="/cn/valuation/">AI 估值</a>
+        <a class="btn btn-primary" href="/explore/">浏览资产</a>
+        <a class="btn btn-ghost" href="/valuation.html">AI 估值</a>
       </div>
-    </section>
+    </div>
   </main>
 
-  <footer>© 2026 HERITAGEX SYDNEY</footer>
+  <footer>© 2026 HeritageX</footer>
+
 </body>
 </html>
