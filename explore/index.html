@@ -3,210 +3,145 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Explore Assets — HeritageX</title>
+  <title>Explore — HeritageX</title>
   <style>
+    /* 1. 继承欢迎页的变量与全局样式 */
     :root {
-      --bg: #050608;
-      --fg: #ffffff;
+      --bg: #07080c;
+      --fg: #fff;
+      --muted: rgba(255,255,255,.46);
+      --hair: rgba(255,255,255,.10);
+      --hair2: rgba(255,255,255,.14);
       --accent: #5a8cff;
-      --accent-gradient: linear-gradient(135deg, #5a8cff 0%, #b478ff 100%);
-      --muted: rgba(255, 255, 255, .6);
-      --line: rgba(255, 255, 255, .08);
-      --card-bg: rgba(255, 255, 255, .03);
+      --shadow: 0 20px 70px rgba(0,0,0,.60);
     }
-
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-
     body {
-      margin: 0;
-      font-family: "Inter", system-ui, -apple-system, sans-serif;
-      background: 
-        radial-gradient(circle at 15% 25%, rgba(90, 140, 255, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 85% 70%, rgba(180, 120, 255, 0.12) 0%, transparent 40%),
-        var(--bg);
-      color: var(--fg);
-      min-height: 100vh;
-      overflow-x: hidden;
+      margin: 0; font-family: -apple-system, system-ui, sans-serif;
+      color: var(--fg); background: var(--bg); overflow-x: hidden;
     }
 
-    .container { max-width: 1100px; margin: 0 auto; padding: 80px 24px; }
+    /* 2. 继承欢迎页的高级背景系统 */
+    .bg { position: fixed; inset: 0; z-index: -3; background: radial-gradient(1200px 800px at 15% 10%, rgba(120,170,255,.20), transparent 60%), radial-gradient(1000px 700px at 88% 18%, rgba(180,130,255,.16), transparent 60%), linear-gradient(180deg, #07080c 0%, #05060a 100%); }
+    .drift { position: fixed; inset: -20%; z-index: -2; background: radial-gradient(700px 520px at 25% 35%, rgba(120,170,255,.18), transparent 60%), radial-gradient(740px 560px at 78% 45%, rgba(180,130,255,.14), transparent 62%); opacity: .45; animation: drift 18s ease-in-out infinite alternate; pointer-events: none; }
+    .grain { position: fixed; inset: 0; z-index: -1; opacity: .06; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E"); mix-blend-mode: overlay; }
+    @keyframes drift { 0% { transform: translate(-2%, -1%) scale(1); } 100% { transform: translate(2%, 1%) scale(1.02); } }
 
-    /* --- Navigation --- */
-    nav { position: absolute; top: 0; left: 0; right: 0; padding: 30px 40px; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-weight: 800; font-size: 20px; letter-spacing: -0.5px; text-decoration: none; color: #fff; }
-    .lang-switch { font-size: 13px; color: var(--muted); text-decoration: none; border: 1px solid var(--line); padding: 6px 14px; border-radius: 99px; transition: 0.3s; }
-    .lang-switch:hover { background: var(--line); color: #fff; }
-
-    /* --- Hero Section --- */
-    .hero { text-align: center; margin-bottom: 80px; }
-    .hero h1 { font-size: clamp(40px, 6vw, 64px); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 24px; background: linear-gradient(to bottom, #fff 60%, rgba(255,255,255,0.6)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero p { max-width: 600px; margin: 0 auto 40px; font-size: 18px; color: var(--muted); line-height: 1.6; }
-
-    /* --- Premium Buttons --- */
-    .btn-main {
-      position: relative; display: inline-flex; align-items: center; padding: 18px 36px;
-      background: #fff; color: #000; border-radius: 14px; text-decoration: none;
-      font-weight: 700; font-size: 16px; overflow: hidden; transition: 0.3s cubic-bezier(0.2, 1, 0.3, 1);
-    }
-    .btn-main:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(90, 140, 255, 0.25); }
-
-    /* --- Asset Grid --- */
-    .grid { display: grid; gap: 24px; grid-template-columns: repeat(3, 1fr); margin-bottom: 100px; }
-    .card {
-      position: relative; padding: 40px 30px; border-radius: 24px;
-      background: var(--card-bg); border: 1px solid var(--line);
-      backdrop-filter: blur(20px); transition: 0.4s ease;
-    }
-    .card:hover { transform: translateY(-8px); border-color: rgba(90, 140, 255, 0.4); background: rgba(255,255,255,0.06); }
-    .card h2 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
-    .card ul { padding: 0; list-style: none; margin: 0; }
-    .card li { margin-bottom: 14px; color: var(--muted); font-size: 15px; display: flex; align-items: center; }
-    .card li::before { content: ""; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-right: 12px; opacity: 0.6; }
-
-    /* --- Modal Architecture --- */
-    .modal {
-      position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
-      background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); z-index: 9999; padding: 20px;
-    }
-    .modal.active { display: flex; animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-    .modal-content {
-      width: 100%; max-width: 480px; background: #0f1115; border: 1px solid var(--line);
-      border-radius: 28px; padding: 40px; position: relative;
-    }
-    .modal-content h3 { font-size: 24px; font-weight: 800; margin-bottom: 30px; letter-spacing: -0.5px; }
-
-    .input-group { margin-bottom: 24px; }
-    .input-group label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--accent); letter-spacing: 1px; margin-bottom: 8px; }
+    /* 3. 继承导航与语言切换 */
+    .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 22px 24px; display: flex; justify-content: space-between; align-items: center; z-index: 20; }
+    .logo { font-weight: 800; font-size: 18px; text-decoration: none; color: #fff; letter-spacing: -0.5px; }
     
-    select, input, textarea {
-      width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--line);
-      padding: 14px 16px; border-radius: 12px; color: #fff; font-size: 15px; transition: 0.2s;
-    }
-    select:focus, input:focus, textarea:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,0.08); }
-    textarea { min-height: 110px; resize: none; }
-    .hint { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 8px; }
+    .lang { position: relative; }
+    .lang-btn { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--hair); background: rgba(255,255,255,.05); backdrop-filter: blur(12px); color: #fff; cursor: pointer; transition: 0.2s; }
+    .lang-menu { position: absolute; top: 40px; right: 0; min-width: 140px; background: rgba(10,12,16,0.85); border: 1px solid var(--hair); border-radius: 12px; backdrop-filter: blur(14px); opacity: 0; transform: translateY(-10px); pointer-events: none; transition: 0.2s; padding: 6px; }
+    .lang.open .lang-menu { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .lang-item { display: block; padding: 10px; color: #fff; text-decoration: none; font-size: 13px; border-radius: 8px; }
+    .lang-item:hover { background: rgba(255,255,255,0.1); }
 
-    .modal-actions { display: flex; gap: 12px; margin-top: 32px; }
-    .btn-submit { flex: 2; background: #fff; color: #000; border: none; padding: 16px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-    .btn-submit:hover { background: var(--accent); color: #fff; }
-    .btn-close { flex: 1; background: transparent; color: #fff; border: 1px solid var(--line); padding: 16px; border-radius: 12px; cursor: pointer; }
+    /* 4. Explore 页面主体内容样式 */
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 120px 24px 80px; text-align: center; }
+    h1 { font-size: clamp(32px, 5vw, 56px); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 20px; }
+    .sub { color: var(--muted); font-size: 17px; max-width: 600px; margin: 0 auto 50px; line-height: 1.6; }
 
-    @keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .grid { display: grid; gap: 20px; grid-template-columns: repeat(3, 1fr); margin-bottom: 60px; }
+    .card { background: rgba(255,255,255,0.03); border: 1px solid var(--hair); border-radius: 20px; padding: 32px 24px; text-align: left; backdrop-filter: blur(10px); transition: 0.3s; }
+    .card:hover { transform: translateY(-5px); border-color: var(--hair2); background: rgba(255,255,255,0.06); }
+    .card h2 { font-size: 18px; margin-bottom: 16px; color: #fff; }
+    .card ul { padding: 0; list-style: none; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
+    .card li::before { content: "•"; color: var(--accent); margin-right: 8px; }
 
-    @media (max-width: 800px) {
-      .grid { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 42px; }
-    }
+    /* 5. 统一按钮样式 */
+    .btn-submit { background: #fff; color: #000; padding: 16px 32px; border-radius: 999px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 15px; }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(90,140,255,0.3); background: var(--accent); color: #fff; }
+
+    /* Modal 适配欢迎页风格 */
+    .modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 100; padding: 20px; }
+    .modal.open { display: flex; }
+    .modal-box { background: #0c0d11; border: 1px solid var(--hair); border-radius: 24px; padding: 36px; width: 100%; max-width: 460px; }
+    select, textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--hair); border-radius: 12px; color: #fff; padding: 12px; margin-bottom: 18px; font-size: 14px; outline: none; }
+    .field-label { display: block; font-size: 11px; color: var(--accent); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px; }
+
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
+  <div class="bg"></div>
+  <div class="drift"></div>
+  <div class="grain"></div>
 
-  <nav>
+  <div class="topbar">
     <a href="/" class="logo">HeritageX</a>
-    <a href="/explore/" class="lang-switch">中文版</a>
-  </nav>
+    <div class="lang" id="lang">
+      <button class="lang-btn" id="langBtn">
+        <span class="lang-label">EN</span>
+        <svg style="width:10px;height:10px;opacity:0.6" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="lang-menu">
+        <a class="lang-item" href="/explore/">English (EN)</a>
+        <a class="lang-item" href="/cn/explore/">中文 (CN)</a>
+      </div>
+    </div>
+  </div>
 
-  <div class="container">
-    <section class="hero">
-      <h1>Classic Assets.<br>Modern Intelligence.</h1>
-      <p>Bespoke sourcing and strategic trade for heritage plates, collectible vehicles, and rare OEM components.</p>
-      <a href="#" class="btn-main" onclick="toggleModal(true)">Submit Inquiry</a>
-    </section>
+  <main class="wrap">
+    <h1>Classic Assets.</h1>
+    <p class="sub">Bespoke sourcing and strategic trade for heritage plates and collectible automobiles.</p>
 
     <div class="grid">
       <div class="card">
-        <h2>Classic Cars</h2>
-        <ul>
-          <li>Global sourcing network</li>
-          <li>Import & logistics management</li>
-          <li>Private collection advisory</li>
-        </ul>
-      </div>
-      <div class="card">
         <h2>Heritage Plates</h2>
-        <ul>
-          <li>Numerical plate acquisition</li>
-          <li>Investment-grade assets</li>
-          <li>Secure title transfer</li>
-        </ul>
+        <ul><li>Numeric plate acquisition</li><li>Private title transfer</li><li>Investment advisory</li></ul>
       </div>
       <div class="card">
-        <h2>Rare Parts</h2>
-        <ul>
-          <li>Obsolete OEM inventory</li>
-          <li>Global parts procurement</li>
-          <li>Quality-assured sourcing</li>
-        </ul>
+        <h2>Classic Cars</h2>
+        <ul><li>Global sourcing network</li><li>Import/Export logistics</li><li>Asset management</li></ul>
+      </div>
+      <div class="card">
+        <h2>OEM Parts</h2>
+        <ul><li>Rare parts procurement</li><li>Global supply chain</li><li>Quality verification</li></ul>
       </div>
     </div>
 
-    <section style="text-align: center; opacity: 0.5; font-size: 13px;">
-      © 2026 HeritageX. Precision in every transaction.
-    </section>
-  </div>
+    <button class="btn-submit" onclick="toggleModal(true)">Submit Inquiry</button>
+    <div style="margin-top: 60px; font-size: 11px; color: rgba(255,255,255,0.2);">© 2026 HeritageX. All rights reserved.</div>
+  </main>
 
-  <div class="modal" id="inquiryModal">
-    <div class="modal-content">
-      <h3>Submit Inquiry</h3>
+  <div class="modal" id="modal">
+    <div class="modal-box">
+      <h3 style="margin:0 0 24px">Submit Inquiry</h3>
+      <label class="field-label">Category</label>
+      <select id="cat">
+        <option>Heritage Number Plates</option>
+        <option>Classic / Rare Vehicles</option>
+        <option>OEM Parts Sourcing</option>
+      </select>
       
-      <div class="input-group">
-        <label>Asset Category</label>
-        <select id="cat">
-          <option>Heritage Number Plates</option>
-          <option>Classic / Rare Vehicles</option>
-          <option>OEM Parts & Sourcing</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <label>Inquiry Type</label>
-        <select id="type">
-          <option>Buy / Sourcing Request</option>
-          <option>Sell / Consignment</option>
-          <option>Asset Valuation</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <label>Request Details</label>
-        <textarea id="desc" placeholder="Details (Model, Year, VIN, or Plate segment)..."></textarea>
-        <div class="hint">Please be as specific as possible for faster processing.</div>
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn-close" onclick="toggleModal(false)">Close</button>
-        <button class="btn-submit" onclick="sendInquiry()">Send Request</button>
+      <label class="field-label">Details</label>
+      <textarea id="desc" placeholder="Model, Year, VIN, or Plate segment..."></textarea>
+      
+      <div style="display:flex; gap:10px">
+        <button class="btn-submit" style="flex:2" onclick="sendInquiry()">Send to WhatsApp</button>
+        <button style="flex:1; background:transparent; border:1px solid var(--hair); color:#fff; border-radius:999px; cursor:pointer" onclick="toggleModal(false)">Close</button>
       </div>
     </div>
   </div>
 
   <script>
-    const WA_PHONE = "61499987789";
+    // 语言切换脚本
+    const lang = document.getElementById('lang');
+    const btn = document.getElementById('langBtn');
+    btn.onclick = (e) => { e.stopPropagation(); lang.classList.toggle('open'); };
+    document.onclick = () => lang.classList.remove('open');
 
-    function toggleModal(show) {
-      const m = document.getElementById('inquiryModal');
-      m.classList.toggle('active', show);
-      document.body.style.overflow = show ? 'hidden' : 'auto';
-    }
-
+    // 弹窗与提交脚本
+    function toggleModal(s) { document.getElementById('modal').classList.toggle('open', s); }
     function sendInquiry() {
       const cat = document.getElementById('cat').value;
-      const type = document.getElementById('type').value;
       const desc = document.getElementById('desc').value;
-
-      if(!desc) return alert("Please enter your request details.");
-
-      const text = `*HeritageX Inquiry*%0A%0A` +
-                   `*Category:* ${cat}%0A` +
-                   `*Type:* ${type}%0A` +
-                   `*Details:* ${desc}`;
-
-      window.open(`https://wa.me/${WA_PHONE}?text=${text}`, '_blank');
+      if(!desc) return alert("Please enter details.");
+      const text = `*New HeritageX Request*%0A*Category:* ${cat}%0A*Details:* ${desc}`;
+      window.open(`https://wa.me/61499987789?text=${text}`, '_blank');
       toggleModal(false);
-    }
-
-    window.onclick = function(e) {
-      if (e.target.className === 'modal active') toggleModal(false);
     }
   </script>
 </body>
