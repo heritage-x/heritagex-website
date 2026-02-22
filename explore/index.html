@@ -3,250 +3,211 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Explore — HeritageX</title>
+  <title>Explore Assets — HeritageX</title>
   <style>
     :root {
-      --bg: #0b0c10;
+      --bg: #050608;
       --fg: #ffffff;
       --accent: #5a8cff;
+      --accent-gradient: linear-gradient(135deg, #5a8cff 0%, #b478ff 100%);
       --muted: rgba(255, 255, 255, .6);
-      --line: rgba(255, 255, 255, .1);
-      --card: rgba(255, 255, 255, .04);
-      --btn: rgba(255, 255, 255, .08);
-      --btnHover: rgba(255, 255, 255, .12);
+      --line: rgba(255, 255, 255, .08);
+      --card-bg: rgba(255, 255, 255, .03);
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
     body {
       margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background: radial-gradient(900px 500px at 20% 30%, rgba(90,140,255,.18), transparent 60%),
-                  radial-gradient(700px 450px at 85% 35%, rgba(180,120,255,.15), transparent 62%),
-                  var(--bg);
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background: 
+        radial-gradient(circle at 15% 25%, rgba(90, 140, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 70%, rgba(180, 120, 255, 0.12) 0%, transparent 40%),
+        var(--bg);
       color: var(--fg);
       min-height: 100vh;
-      line-height: 1.5;
+      overflow-x: hidden;
     }
 
-    .wrap { max-width: 1000px; margin: 0 auto; padding: 72px 20px 80px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 80px 24px; }
 
-    /* Header Section */
-    .hero { padding: 40px 0 32px; text-align: center; }
-    h1 { margin: 0 0 16px; font-size: clamp(32px, 5vw, 48px); letter-spacing: -.03em; font-weight: 800; }
-    .sub { max-width: 700px; margin: 0 auto 32px; color: var(--muted); font-size: 17px; line-height: 1.7; }
+    /* --- Navigation --- */
+    nav { position: absolute; top: 0; left: 0; right: 0; padding: 30px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-weight: 800; font-size: 20px; letter-spacing: -0.5px; text-decoration: none; color: #fff; }
+    .lang-switch { font-size: 13px; color: var(--muted); text-decoration: none; border: 1px solid var(--line); padding: 6px 14px; border-radius: 99px; transition: 0.3s; }
+    .lang-switch:hover { background: var(--line); color: #fff; }
 
-    /* Buttons */
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: 14px 28px; border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: #fff; color: #000;
-      text-decoration: none; font-weight: 700; cursor: pointer;
-      transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* --- Hero Section --- */
+    .hero { text-align: center; margin-bottom: 80px; }
+    .hero h1 { font-size: clamp(40px, 6vw, 64px); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 24px; background: linear-gradient(to bottom, #fff 60%, rgba(255,255,255,0.6)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { max-width: 600px; margin: 0 auto 40px; font-size: 18px; color: var(--muted); line-height: 1.6; }
+
+    /* --- Premium Buttons --- */
+    .btn-main {
+      position: relative; display: inline-flex; align-items: center; padding: 18px 36px;
+      background: #fff; color: #000; border-radius: 14px; text-decoration: none;
+      font-weight: 700; font-size: 16px; overflow: hidden; transition: 0.3s cubic-bezier(0.2, 1, 0.3, 1);
     }
-    .btn:hover { background: var(--accent); color: #fff; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(90,140,255,0.2); }
+    .btn-main:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(90, 140, 255, 0.25); }
 
-    /* Grid Layout */
-    .grid {
-      display: grid; gap: 24px;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      margin: 40px 0;
-    }
-
+    /* --- Asset Grid --- */
+    .grid { display: grid; gap: 24px; grid-template-columns: repeat(3, 1fr); margin-bottom: 100px; }
     .card {
-      border: 1px solid var(--line);
-      background: var(--card);
-      border-radius: 20px;
-      padding: 32px 24px;
-      backdrop-filter: blur(12px);
-      transition: all 0.3s ease;
-      position: relative;
+      position: relative; padding: 40px 30px; border-radius: 24px;
+      background: var(--card-bg); border: 1px solid var(--line);
+      backdrop-filter: blur(20px); transition: 0.4s ease;
     }
-    .card:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.06); }
-    .card h2 { margin: 0 0 16px; font-size: 18px; letter-spacing: .02em; color: var(--accent); }
-    .card ul { margin: 0; padding: 0; list-style: none; color: var(--muted); font-size: 14px; }
-    .card ul li { margin-bottom: 12px; padding-left: 18px; position: relative; }
-    .card ul li::before { content: "•"; position: absolute; left: 0; color: var(--accent); }
+    .card:hover { transform: translateY(-8px); border-color: rgba(90, 140, 255, 0.4); background: rgba(255,255,255,0.06); }
+    .card h2 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+    .card ul { padding: 0; list-style: none; margin: 0; }
+    .card li { margin-bottom: 14px; color: var(--muted); font-size: 15px; display: flex; align-items: center; }
+    .card li::before { content: ""; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-right: 12px; opacity: 0.6; }
 
-    /* Execution Block */
-    .exec {
-      margin: 40px auto; padding: 32px; max-width: 860px;
-      border: 1px solid var(--line);
-      background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-      border-radius: 24px; text-align: center;
-    }
-    .exec h3 { margin: 0 0 12px; font-size: 20px; }
-    .exec p { margin: 0; color: var(--muted); font-size: 15px; }
-
-    /* Modal Styling */
+    /* --- Modal Architecture --- */
     .modal {
-      position: fixed; inset: 0; display: none;
-      align-items: center; justify-content: center;
-      background: rgba(0,0,0,0.8); backdrop-filter: blur(4px);
-      padding: 20px; z-index: 1000;
+      position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); z-index: 9999; padding: 20px;
     }
-    .modal.open { display: flex; animation: fadeIn 0.3s ease; }
-    .modalBox {
-      width: min(500px, 100%); border-radius: 24px;
-      border: 1px solid var(--line);
-      background: #121317; padding: 32px;
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    .modal.active { display: flex; animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .modal-content {
+      width: 100%; max-width: 480px; background: #0f1115; border: 1px solid var(--line);
+      border-radius: 28px; padding: 40px; position: relative;
     }
-    .modalBox h4 { margin: 0 0 24px; font-size: 22px; font-weight: 700; text-align: center; }
+    .modal-content h3 { font-size: 24px; font-weight: 800; margin-bottom: 30px; letter-spacing: -0.5px; }
 
-    /* Form Elements */
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .input-group { margin-bottom: 24px; }
+    .input-group label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--accent); letter-spacing: 1px; margin-bottom: 8px; }
     
-    select, textarea, input {
-      width: 100%; background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px; color: #fff; padding: 12px 16px;
-      font-size: 15px; transition: all 0.2s;
+    select, input, textarea {
+      width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+      padding: 14px 16px; border-radius: 12px; color: #fff; font-size: 15px; transition: 0.2s;
     }
-    select:focus, textarea:focus, input:focus { border-color: var(--accent); background: rgba(255,255,255,0.08); outline: none; }
-    
-    textarea { min-height: 100px; resize: none; }
-    .field-hint { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 6px; line-height: 1.4; }
+    select:focus, input:focus, textarea:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,0.08); }
+    textarea { min-height: 110px; resize: none; }
+    .hint { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 8px; }
 
-    .modal-btns { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin-top: 24px; }
-    .btn-cancel { padding: 14px; border-radius: 12px; border: 1px solid var(--line); background: transparent; color: #fff; cursor: pointer; font-weight: 600; }
-    .btn-submit { padding: 14px; border-radius: 12px; border: none; background: var(--accent); color: #fff; cursor: pointer; font-weight: 700; }
-    .btn-submit:hover { background: #4a7be6; }
+    .modal-actions { display: flex; gap: 12px; margin-top: 32px; }
+    .btn-submit { flex: 2; background: #fff; color: #000; border: none; padding: 16px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .btn-submit:hover { background: var(--accent); color: #fff; }
+    .btn-close { flex: 1; background: transparent; color: #fff; border: 1px solid var(--line); padding: 16px; border-radius: 12px; cursor: pointer; }
 
-    @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-    @media (max-width: 860px) {
+    @media (max-width: 800px) {
       .grid { grid-template-columns: 1fr; }
-      .wrap { padding-top: 40px; }
+      .hero h1 { font-size: 42px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="wrap">
+  <nav>
+    <a href="/" class="logo">HeritageX</a>
+    <a href="/explore/" class="lang-switch">中文版</a>
+  </nav>
+
+  <div class="container">
     <section class="hero">
-      <h1>Classic Automotive Assets,<br/>Connected Globally.</h1>
-      <p class="sub">
-        From Heritage Number Plates to Rare Vehicles and Parts — We Source, Trade and Ship with Precision.
-      </p>
-      <button class="btn" onclick="openModal()">立即提交您的需求</button>
+      <h1>Classic Assets.<br>Modern Intelligence.</h1>
+      <p>Bespoke sourcing and strategic trade for heritage plates, collectible vehicles, and rare OEM components.</p>
+      <a href="#" class="btn-main" onclick="toggleModal(true)">Submit Inquiry</a>
     </section>
 
-    <section class="grid">
+    <div class="grid">
       <div class="card">
         <h2>Classic Cars</h2>
         <ul>
-          <li>Classic vehicle sourcing</li>
-          <li>Accident / modification projects</li>
-          <li>Private transaction facilitation</li>
+          <li>Global sourcing network</li>
+          <li>Import & logistics management</li>
+          <li>Private collection advisory</li>
         </ul>
       </div>
       <div class="card">
         <h2>Heritage Plates</h2>
         <ul>
-          <li>Australian numeric plates</li>
-          <li>Signature & premium plates</li>
-          <li>Private acquisition facilitation</li>
+          <li>Numerical plate acquisition</li>
+          <li>Investment-grade assets</li>
+          <li>Secure title transfer</li>
         </ul>
       </div>
       <div class="card">
         <h2>Rare Parts</h2>
         <ul>
-          <li>Genuine OEM inventory</li>
-          <li>Global supply chain sourcing</li>
-          <li>Hard-to-find components</li>
+          <li>Obsolete OEM inventory</li>
+          <li>Global parts procurement</li>
+          <li>Quality-assured sourcing</li>
         </ul>
       </div>
-    </section>
+    </div>
 
-    <section class="exec">
-      <h3>End-to-End Execution</h3>
-      <p>From global sourcing to cross-border logistics and secure delivery — we manage the entire process with discretion and precision.</p>
+    <section style="text-align: center; opacity: 0.5; font-size: 13px;">
+      © 2026 HeritageX. Precision in every transaction.
     </section>
-
-    <footer style="text-align: center; margin-top: 60px;">
-      <p style="color: var(--muted); margin-bottom: 20px;">Ready to find your next asset?</p>
-      <button class="btn" onclick="openModal()">Contact Us</button>
-      <div style="margin-top: 40px; font-size: 12px; color: rgba(255,255,255,0.3);">© 2026 HeritageX. All rights reserved.</div>
-    </footer>
   </div>
 
-  <div class="modal" id="modal">
-    <div class="modalBox">
-      <h4>New Requirement</h4>
+  <div class="modal" id="inquiryModal">
+    <div class="modal-content">
+      <h3>Submit Inquiry</h3>
       
-      <div class="form-group">
-        <label>1. Interest / 主题</label>
-        <select id="reqSubject">
-          <option value="Heritage Plates">Heritage Plates (车牌)</option>
-          <option value="Classic Cars">Classic Cars (经典车)</option>
-          <option value="Rare Parts">Rare Parts (稀有零件)</option>
+      <div class="input-group">
+        <label>Asset Category</label>
+        <select id="cat">
+          <option>Heritage Number Plates</option>
+          <option>Classic / Rare Vehicles</option>
+          <option>OEM Parts & Sourcing</option>
         </select>
       </div>
 
-      <div class="form-group">
-        <label>2. Requirement Type / 类型</label>
-        <select id="reqType">
-          <option value="Sourcing / 求购">Sourcing / 求购</option>
-          <option value="Consignment / 寄卖">Consignment / 寄卖</option>
-          <option value="Valuation / 估值">Valuation / 估值</option>
+      <div class="input-group">
+        <label>Inquiry Type</label>
+        <select id="type">
+          <option>Buy / Sourcing Request</option>
+          <option>Sell / Consignment</option>
+          <option>Asset Valuation</option>
         </select>
       </div>
 
-      <div class="form-group">
-        <label>3. Details / 需求描述</label>
-        <textarea id="reqDesc" placeholder="Describe what you are looking for..."></textarea>
-        <div class="field-hint">提示：请包含车型、年份、号段或零件号 (VIN/Part No.)</div>
+      <div class="input-group">
+        <label>Request Details</label>
+        <textarea id="desc" placeholder="Details (Model, Year, VIN, or Plate segment)..."></textarea>
+        <div class="hint">Please be as specific as possible for faster processing.</div>
       </div>
 
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-        <button class="btn-submit" onclick="submitToWA()">Submit Request</button>
+      <div class="modal-actions">
+        <button class="btn-close" onclick="toggleModal(false)">Close</button>
+        <button class="btn-submit" onclick="sendInquiry()">Send Request</button>
       </div>
     </div>
   </div>
 
   <script>
-    const modal = document.getElementById('modal');
-    const phone = "61499987789"; // Your WhatsApp Number
+    const WA_PHONE = "61499987789";
 
-    function openModal() {
-      modal.classList.add('open');
-      document.body.style.overflow = 'hidden';
+    function toggleModal(show) {
+      const m = document.getElementById('inquiryModal');
+      m.classList.toggle('active', show);
+      document.body.style.overflow = show ? 'hidden' : 'auto';
     }
 
-    function closeModal() {
-      modal.classList.remove('open');
-      document.body.style.overflow = 'auto';
+    function sendInquiry() {
+      const cat = document.getElementById('cat').value;
+      const type = document.getElementById('type').value;
+      const desc = document.getElementById('desc').value;
+
+      if(!desc) return alert("Please enter your request details.");
+
+      const text = `*HeritageX Inquiry*%0A%0A` +
+                   `*Category:* ${cat}%0A` +
+                   `*Type:* ${type}%0A` +
+                   `*Details:* ${desc}`;
+
+      window.open(`https://wa.me/${WA_PHONE}?text=${text}`, '_blank');
+      toggleModal(false);
     }
 
-    function submitToWA() {
-      const subject = document.getElementById('reqSubject').value;
-      const type = document.getElementById('reqType').value;
-      const desc = document.getElementById('reqDesc').value;
-
-      if(!desc) {
-        alert("Please provide some details about your request.");
-        return;
-      }
-
-      // Format message for WhatsApp
-      const message = `*New Request from HeritageX Website*%0A%0A` +
-                      `*Subject:* ${subject}%0A` +
-                      `*Type:* ${type}%0A` +
-                      `*Details:* ${desc}`;
-
-      const waUrl = `https://wa.me/${phone}?text=${message}`;
-      
-      // Open WhatsApp
-      window.open(waUrl, '_blank');
-      closeModal();
+    window.onclick = function(e) {
+      if (e.target.className === 'modal active') toggleModal(false);
     }
-
-    // Close on backdrop click
-    modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
   </script>
 </body>
 </html>
