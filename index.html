@@ -3,83 +3,386 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HeritageX | Global Automotive Asset Intelligence</title>
+  <title>HeritageX</title>
+  <meta name="description" content="Heritage plates, classic automobiles and rare parts — global sourcing with AI precision." />
+
   <style>
-    :root {
-      --white: #ffffff;
-      --soft-white: rgba(255, 255, 255, 0.75);
+    :root{
+      --bg:#07080c;
+      --fg:#fff;
+
+      /* text */
+      --muted: rgba(255,255,255,.46);
+      --muted2: rgba(255,255,255,.34);
+
+      /* lines */
+      --hair: rgba(255,255,255,.10);
+      --hair2: rgba(255,255,255,.16);
+
+      /* glass */
+      --glass: rgba(255,255,255,.055);
+
+      /* shadow */
+      --shadow: 0 20px 70px rgba(0,0,0,.62);
+      --shadowSoft: 0 10px 35px rgba(0,0,0,.36);
     }
 
-    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    html, body { height: 100%; margin: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif; background: #000; overflow: hidden; }
-
-    /* 背景：极简暗色，带微弱纹理 */
-    .hero-bg {
-      position: fixed; inset: 0; z-index: -1;
-      background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%), 
-                  url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=2400');
-      background-size: cover;
-      background-position: center;
+    *{ box-sizing:border-box; -webkit-font-smoothing: antialiased; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      color:var(--fg);
+      background:var(--bg);
+      overflow:hidden;
     }
 
-    /* 顶部导航 */
-    .topbar { position: fixed; top: 0; left: 0; right: 0; padding: 48px 64px; display: flex; justify-content: flex-end; z-index: 100; }
-    .lang-switcher {
-      font-size: 12px; font-weight: 600; color: var(--white); text-decoration: none;
-      letter-spacing: 1px; padding: 8px 20px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.25);
-      transition: all 0.3s;
-    }
-    .lang-switcher:hover { background: var(--white); color: #000; border-color: var(--white); }
-
-    /* 内容区域：Shopify 经典的左侧或中心布局 */
-    .wrap { height: 100%; display: flex; align-items: center; justify-content: center; padding: 0 40px; }
-    .hero { max-width: 1000px; text-align: center; }
-
-    /* 品牌名：解决所有裁切问题，纯白有力 */
-    h1 {
-      font-size: clamp(64px, 12vw, 128px); font-weight: 800; letter-spacing: -0.04em;
-      line-height: 1; margin: 0 0 24px; color: var(--white);
+    /* ===== Premium no-image background (layered) ===== */
+    .bg{
+      position:fixed; inset:0; z-index:-4;
+      background:
+        /* subtle top-to-bottom depth */
+        linear-gradient(180deg, #07080c 0%, #06070b 55%, #04050a 100%),
+        /* soft diagonal tint */
+        linear-gradient(135deg, rgba(255,255,255,.03) 0%, rgba(120,170,255,.06) 35%, rgba(180,130,255,.05) 68%, rgba(255,255,255,.02) 100%);
     }
 
-    /* Slogan：极致优化，字间距拉开，确保每一个字符亮度绝对统一 */
-    .subtitle {
-      font-size: clamp(16px, 1.8vw, 22px); color: var(--soft-white);
-      line-height: 1.6; letter-spacing: 0.1em; margin: 0 auto 56px;
-      max-width: 800px; font-weight: 400;
+    /* floating halos: extremely subtle */
+    .halos{
+      position:fixed; inset:-18%; z-index:-3;
+      background:
+        radial-gradient(900px 650px at 18% 18%, rgba(120,170,255,.18), transparent 62%),
+        radial-gradient(850px 650px at 82% 24%, rgba(180,130,255,.14), transparent 64%),
+        radial-gradient(900px 700px at 45% 92%, rgba(90,255,220,.06), transparent 66%);
+      opacity:.55;
+      animation: drift 18s ease-in-out infinite alternate;
+      transform: translate3d(0,0,0);
+      pointer-events:none;
+      filter: saturate(112%);
     }
-    .subtitle b { color: var(--white); font-weight: 600; }
-
-    /* 按钮：极简且有力的交互感 */
-    .actions { display: flex; gap: 20px; justify-content: center; }
-    .btn {
-      padding: 18px 48px; border-radius: 6px; font-weight: 600; font-size: 16px;
-      text-decoration: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    @keyframes drift{
+      0%   { transform: translate(-2.2%, -1.1%) scale(1.02); filter: blur(0px) saturate(110%); }
+      100% { transform: translate(2.0%,  1.5%) scale(1.05); filter: blur(.6px) saturate(116%); }
     }
-    .btn-white { background: var(--white); color: #000; }
-    .btn-white:hover { background: #e8e8e8; transform: translateY(-2px); }
-    .btn-outline { background: rgba(0,0,0,0.3); color: var(--white); border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(8px); }
-    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--white); transform: translateY(-2px); }
 
-    footer { position: fixed; bottom: 48px; width: 100%; text-align: center; font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 4px; }
+    /* vignette for luxury depth */
+    .vignette{
+      position:fixed; inset:-2px; z-index:-2;
+      background:
+        radial-gradient(1200px 760px at 50% 42%, transparent 38%, rgba(0,0,0,.62) 86%),
+        radial-gradient(900px 520px at 50% 120%, rgba(0,0,0,.66), transparent 62%);
+      pointer-events:none;
+    }
+
+    /* film grain */
+    .grain{
+      position:fixed; inset:0; z-index:-1;
+      pointer-events:none;
+      opacity:.055;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    /* ===== Topbar ===== */
+    .topbar{
+      position:fixed; top:0; left:0; right:0;
+      padding:22px 24px;
+      display:flex; justify-content:flex-end;
+      z-index:20;
+    }
+
+    /* ===== Language Switch (luxury pill) ===== */
+    .lang{ position:relative; user-select:none; }
+    .lang-btn{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--hair);
+      background: rgba(255,255,255,.045);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadowSoft);
+      color: rgba(255,255,255,.82);
+      cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .lang-btn:hover{
+      transform: translateY(-1px);
+      border-color: var(--hair2);
+      background: rgba(255,255,255,.065);
+    }
+    .lang-label{ font-size:13px; letter-spacing:.2px; opacity:.9; }
+    .chev{ width:10px; height:10px; opacity:.8; }
+    .globe{ width:18px; height:18px; opacity:.95; filter: drop-shadow(0 6px 14px rgba(0,0,0,.35)); }
+
+    .lang-menu{
+      position:absolute; top:46px; right:0;
+      min-width: 160px;
+      padding:8px;
+      border-radius:14px;
+      border:1px solid var(--hair);
+      background: rgba(10,12,16,.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      transform-origin: top right;
+      transform: translateY(-6px) scale(.985);
+      opacity:0; pointer-events:none;
+      transition: opacity .16s ease, transform .16s ease;
+    }
+    .lang.open .lang-menu{
+      opacity:1; transform: translateY(0) scale(1);
+      pointer-events:auto;
+    }
+    .lang-item{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 10px;
+      border-radius:10px;
+      color: rgba(255,255,255,.86);
+      text-decoration:none;
+      font-size:13px;
+      border:1px solid transparent;
+      transition: background .14s ease, border-color .14s ease;
+    }
+    .lang-item:hover{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.08);
+    }
+    .tag{
+      font-size:11px;
+      color: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+    }
+
+    /* ===== Layout ===== */
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 118px 20px 76px;
+    }
+    .hero{
+      text-align:center;
+      width:min(980px, 92vw);
+    }
+
+    h1{
+      margin:0 0 22px;
+      font-size: clamp(54px, 6vw, 84px);
+      letter-spacing: -0.03em;
+      line-height: 1.01;
+      font-weight: 820;
+      text-shadow: 0 18px 65px rgba(0,0,0,.60);
+    }
+
+    .subtitle{
+      margin:0 auto;
+      max-width: 760px;
+      font-size: clamp(14px, 1.7vw, 17px);
+      line-height: 1.95;
+      letter-spacing: .28px;
+      color: var(--muted);
+      text-shadow: 0 14px 45px rgba(0,0,0,.60);
+    }
+    .subtitle .line{
+      display:block;
+      background: linear-gradient(90deg, rgba(255,255,255,.62), rgba(255,255,255,.32));
+      -webkit-background-clip:text; background-clip:text;
+      color:transparent;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      align-items:center;
+      margin-top: 46px;
+      flex-wrap:wrap;
+    }
+
+    /* ===== Premium Buttons ===== */
+    .btn{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 12.5px 22px;
+      border-radius: 999px;
+      text-decoration:none;
+      font-weight: 720;
+      letter-spacing: .22px;
+      min-width: 172px;
+      transition: transform .16s ease, opacity .16s ease, background .16s ease, border-color .16s ease;
+      isolation:isolate;
+      transform: translateZ(0);
+    }
+
+    /* primary: matte pearl */
+    .btn-primary{
+      color:#07080c;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(245,245,245,.98) 100%);
+      box-shadow: 0 22px 70px rgba(0,0,0,.58);
+    }
+    .btn-primary:hover{ transform: translateY(-1px); }
+
+    /* secondary: metal glass */
+    .btn-ghost{
+      color: rgba(255,255,255,.88);
+      background: rgba(255,255,255,.042);
+      border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+    }
+
+    /* metal highlight ring */
+    .btn-ghost::before{
+      content:"";
+      position:absolute; inset:-1px;
+      border-radius:999px;
+      padding:1px;
+      background: linear-gradient(140deg,
+        rgba(255,255,255,.24),
+        rgba(255,255,255,.06),
+        rgba(120,170,255,.10),
+        rgba(255,255,255,.04));
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity:.78;
+      pointer-events:none;
+    }
+
+    /* restrained shimmer */
+    .btn-ghost::after{
+      content:"";
+      position:absolute; inset:0;
+      border-radius:999px;
+      background: linear-gradient(110deg,
+        transparent 0%,
+        rgba(255,255,255,.18) 18%,
+        rgba(255,255,255,.06) 32%,
+        transparent 55%);
+      transform: translateX(-130%);
+      opacity:0;
+      pointer-events:none;
+      filter: blur(.2px);
+    }
+    .btn-ghost:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.18);
+    }
+    .btn-ghost:hover::after{
+      opacity:.72;
+      animation: shimmer 1.35s ease forwards;
+    }
+    @keyframes shimmer{
+      0%{ transform: translateX(-130%); }
+      100%{ transform: translateX(130%); }
+    }
+
+    footer{
+      position:fixed; left:0; right:0; bottom:0;
+      padding: 18px 22px;
+      text-align:center;
+      font-size: 11px;
+      color: rgba(255,255,255,.26);
+      letter-spacing:.32em;
+      pointer-events:none;
+      text-transform: uppercase;
+    }
+
+    @media (max-width:480px){
+      .topbar{padding:16px 14px}
+      .wrap{padding-top:108px}
+      .subtitle{max-width: 340px}
+      .btn{min-width: 158px}
+    }
+    @media (prefers-reduced-motion: reduce){
+      .halos{animation:none}
+      .btn-ghost:hover::after{animation:none}
+    }
   </style>
 </head>
+
 <body>
-  <div class="hero-bg"></div>
-  <div class="topbar"><a href="/cn/" class="lang-switcher">CN / EN</a></div>
-  
+  <div class="bg"></div>
+  <div class="halos"></div>
+  <div class="grain"></div>
+  <div class="vignette"></div>
+
+  <div class="topbar">
+    <div class="lang" id="lang">
+      <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">
+        <svg class="globe" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" stroke="currentColor" stroke-width="1.6" opacity=".95"/>
+          <path d="M2 12h20" stroke="currentColor" stroke-width="1.6" opacity=".7"/>
+          <path d="M12 2c3.2 3 5 6.5 5 10s-1.8 7-5 10c-3.2-3-5-6.5-5-10s1.8-7 5-10Z" stroke="currentColor" stroke-width="1.6" opacity=".7"/>
+        </svg>
+        <span class="lang-label">EN</span>
+        <svg class="chev" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="lang-menu" role="menu" aria-label="Language menu">
+        <a class="lang-item" href="/" role="menuitem">
+          English <span class="tag">EN</span>
+        </a>
+        <a class="lang-item" href="/cn/" role="menuitem">
+          中文 <span class="tag">CN</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <main class="wrap">
     <section class="hero">
       <h1>HeritageX</h1>
+
       <p class="subtitle">
-        Bridging heritage assets with <b>global sourcing</b> and <b>AI precision</b>.
+        <span class="line">Bridging heritage plates, classic automobiles and rare parts</span>
+        <span class="line">with global sourcing and AI precision.</span>
       </p>
+
       <div class="actions">
-        <a class="btn btn-white" href="/explore/">Explore Assets</a>
-        <a class="btn btn-outline" href="/valuation/">AI Valuation</a>
+        <a class="btn btn-primary" href="/explore/">Explore Assets</a>
+        <a class="btn btn-ghost" href="/valuation.html">AI Valuation</a>
       </div>
     </section>
   </main>
 
   <footer>© 2026 HERITAGEX SYDNEY</footer>
+
+  <script>
+    (function () {
+      const lang = document.getElementById('lang');
+      const btn = document.getElementById('langBtn');
+
+      function closeMenu() {
+        lang.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = lang.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+
+      document.addEventListener('click', closeMenu);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+      });
+    })();
+  </script>
 </body>
 </html>
