@@ -5,232 +5,248 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Explore — HeritageX</title>
   <style>
-    :root{
-      --bg:#0b0c10;
-      --fg:#ffffff;
-      --muted:rgba(255,255,255,.68);
-      --line:rgba(255,255,255,.10);
-      --card:rgba(255,255,255,.04);
-      --btn:rgba(255,255,255,.08);
-      --btnHover:rgba(255,255,255,.12);
+    :root {
+      --bg: #0b0c10;
+      --fg: #ffffff;
+      --accent: #5a8cff;
+      --muted: rgba(255, 255, 255, .6);
+      --line: rgba(255, 255, 255, .1);
+      --card: rgba(255, 255, 255, .04);
+      --btn: rgba(255, 255, 255, .08);
+      --btnHover: rgba(255, 255, 255, .12);
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background: radial-gradient(900px 500px at 20% 30%, rgba(90,140,255,.22), transparent 60%),
-                  radial-gradient(700px 450px at 85% 35%, rgba(180,120,255,.18), transparent 62%),
+      background: radial-gradient(900px 500px at 20% 30%, rgba(90,140,255,.18), transparent 60%),
+                  radial-gradient(700px 450px at 85% 35%, rgba(180,120,255,.15), transparent 62%),
                   var(--bg);
-      color:var(--fg);
-      min-height:100vh;
+      color: var(--fg);
+      min-height: 100vh;
+      line-height: 1.5;
     }
-    .wrap{max-width:980px;margin:0 auto;padding:72px 20px 60px}
-    .hero{padding:40px 0 18px;text-align:center}
-    h1{margin:0 0 14px;font-size:48px;letter-spacing:-.02em}
-    .sub{max-width:860px;margin:0 auto 26px;color:var(--muted);font-size:16px;line-height:1.7}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;
-      padding:14px 22px;border-radius:999px;
-      border:1px solid var(--line);
-      background:var(--btn);
-      color:#fff;text-decoration:none;
-      font-weight:600;cursor:pointer;
-      transition:.2s ease;
-      min-width:140px;
+
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 72px 20px 80px; }
+
+    /* Header Section */
+    .hero { padding: 40px 0 32px; text-align: center; }
+    h1 { margin: 0 0 16px; font-size: clamp(32px, 5vw, 48px); letter-spacing: -.03em; font-weight: 800; }
+    .sub { max-width: 700px; margin: 0 auto 32px; color: var(--muted); font-size: 17px; line-height: 1.7; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 14px 28px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: #fff; color: #000;
+      text-decoration: none; font-weight: 700; cursor: pointer;
+      transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .btn:hover{background:var(--btnHover)}
-    .grid{
-      display:grid;gap:16px;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      margin:28px 0 26px;
+    .btn:hover { background: var(--accent); color: #fff; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(90,140,255,0.2); }
+
+    /* Grid Layout */
+    .grid {
+      display: grid; gap: 24px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 40px 0;
     }
-    .card{
-      border:1px solid var(--line);
-      background:var(--card);
-      border-radius:16px;
-      padding:18px 18px 16px;
-      text-align:left;
-      backdrop-filter: blur(6px);
+
+    .card {
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 20px;
+      padding: 32px 24px;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s ease;
+      position: relative;
     }
-    .card h2{margin:0 0 10px;font-size:16px;letter-spacing:.02em}
-    .card ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.8;font-size:14px}
-    .exec{
-      margin:26px auto 10px;
-      padding:22px 18px;
-      max-width:860px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      border-radius:16px;
-      text-align:center;
+    .card:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.06); }
+    .card h2 { margin: 0 0 16px; font-size: 18px; letter-spacing: .02em; color: var(--accent); }
+    .card ul { margin: 0; padding: 0; list-style: none; color: var(--muted); font-size: 14px; }
+    .card ul li { margin-bottom: 12px; padding-left: 18px; position: relative; }
+    .card ul li::before { content: "•"; position: absolute; left: 0; color: var(--accent); }
+
+    /* Execution Block */
+    .exec {
+      margin: 40px auto; padding: 32px; max-width: 860px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+      border-radius: 24px; text-align: center;
     }
-    .exec h3{margin:0 0 10px;font-size:16px}
-    .exec p{margin:0;color:var(--muted);line-height:1.8;font-size:14px}
-    .cta{
-      text-align:center;
-      margin-top:34px;
-      padding-top:20px;
-      border-top:1px solid rgba(255,255,255,.06);
+    .exec h3 { margin: 0 0 12px; font-size: 20px; }
+    .exec p { margin: 0; color: var(--muted); font-size: 15px; }
+
+    /* Modal Styling */
+    .modal {
+      position: fixed; inset: 0; display: none;
+      align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(4px);
+      padding: 20px; z-index: 1000;
     }
-    .cta p{margin:0 0 14px;color:var(--muted)}
-    /* Modal */
-    .modal{
-      position:fixed;inset:0;display:none;
-      align-items:center;justify-content:center;
-      background:rgba(0,0,0,.62);
-      padding:18px;
+    .modal.open { display: flex; animation: fadeIn 0.3s ease; }
+    .modalBox {
+      width: min(500px, 100%); border-radius: 24px;
+      border: 1px solid var(--line);
+      background: #121317; padding: 32px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
     }
-    .modal.open{display:flex}
-    .modalBox{
-      width:min(560px, 100%);
-      border-radius:18px;
-      border:1px solid var(--line);
-      background:rgba(10,10,12,.92);
-      padding:18px;
-      backdrop-filter: blur(10px);
+    .modalBox h4 { margin: 0 0 24px; font-size: 22px; font-weight: 700; text-align: center; }
+
+    /* Form Elements */
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    select, textarea, input {
+      width: 100%; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; color: #fff; padding: 12px 16px;
+      font-size: 15px; transition: all 0.2s;
     }
-    .modalBox h4{margin:0 0 10px;font-size:16px}
-    .hint{margin:0 0 12px;color:var(--muted);font-size:13px;line-height:1.7}
-    textarea, input{
-      width:100%;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:12px;
-      color:#fff;
-      padding:12px 12px;
-      font-size:14px;
-      outline:none;
-    }
-    textarea{min-height:120px;resize:vertical;margin-bottom:10px}
-    input{margin-bottom:12px}
-    .row{display:flex;gap:10px;justify-content:flex-end}
-    .btn2{
-      padding:12px 18px;border-radius:999px;border:1px solid var(--line);
-      background:transparent;color:#fff;cursor:pointer;font-weight:600;
-    }
-    .btn2:hover{background:rgba(255,255,255,.06)}
-    .btnPrimary{
-      padding:12px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.16);
-      background:rgba(255,255,255,.12);color:#fff;cursor:pointer;font-weight:700;
-    }
-    .btnPrimary:hover{background:rgba(255,255,255,.16)}
-    .note{margin-top:10px;color:rgba(255,255,255,.55);font-size:12px}
-    @media (max-width:860px){
-      h1{font-size:36px}
-      .grid{grid-template-columns:1fr}
-      .card{text-align:center}
-      .card ul{display:inline-block;text-align:left}
+    select:focus, textarea:focus, input:focus { border-color: var(--accent); background: rgba(255,255,255,0.08); outline: none; }
+    
+    textarea { min-height: 100px; resize: none; }
+    .field-hint { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 6px; line-height: 1.4; }
+
+    .modal-btns { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin-top: 24px; }
+    .btn-cancel { padding: 14px; border-radius: 12px; border: 1px solid var(--line); background: transparent; color: #fff; cursor: pointer; font-weight: 600; }
+    .btn-submit { padding: 14px; border-radius: 12px; border: none; background: var(--accent); color: #fff; cursor: pointer; font-weight: 700; }
+    .btn-submit:hover { background: #4a7be6; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      .wrap { padding-top: 40px; }
     }
   </style>
 </head>
 <body>
+
   <div class="wrap">
     <section class="hero">
-      <h1>Classic Automotive Assets, Connected Globally.</h1>
+      <h1>Classic Automotive Assets,<br/>Connected Globally.</h1>
       <p class="sub">
         From Heritage Number Plates to Rare Vehicles and Parts — We Source, Trade and Ship with Precision.
       </p>
-      <button class="btn" id="openModalBtn">您的需求</button>
+      <button class="btn" onclick="openModal()">立即提交您的需求</button>
     </section>
 
     <section class="grid">
       <div class="card">
-        <h2>Classic Cars &amp; Collectibles</h2>
+        <h2>Classic Cars</h2>
         <ul>
           <li>Classic vehicle sourcing</li>
-          <li>Accident / modification project coordination</li>
+          <li>Accident / modification projects</li>
           <li>Private transaction facilitation</li>
         </ul>
       </div>
-
       <div class="card">
-        <h2>Heritage Number Plates</h2>
+        <h2>Heritage Plates</h2>
         <ul>
           <li>Australian numeric plates</li>
-          <li>Signature &amp; premium plates</li>
+          <li>Signature & premium plates</li>
           <li>Private acquisition facilitation</li>
         </ul>
       </div>
-
       <div class="card">
-        <h2>Rare Parts &amp; OEM Sourcing</h2>
+        <h2>Rare Parts</h2>
         <ul>
           <li>Genuine OEM inventory</li>
           <li>Global supply chain sourcing</li>
+          <li>Hard-to-find components</li>
         </ul>
       </div>
     </section>
 
     <section class="exec">
       <h3>End-to-End Execution</h3>
-      <p>
-        From global sourcing to cross-border logistics and secure delivery —
-        we manage the entire process with discretion and precision.
-      </p>
+      <p>From global sourcing to cross-border logistics and secure delivery — we manage the entire process with discretion and precision.</p>
     </section>
 
-    <section class="cta">
-      <p>Have a specific request? Tell us.</p>
-      <button class="btn" id="openModalBtn2">您的需求</button>
-      <div class="note">© 2026 HeritageX. All rights reserved.</div>
-    </section>
+    <footer style="text-align: center; margin-top: 60px;">
+      <p style="color: var(--muted); margin-bottom: 20px;">Ready to find your next asset?</p>
+      <button class="btn" onclick="openModal()">Contact Us</button>
+      <div style="margin-top: 40px; font-size: 12px; color: rgba(255,255,255,0.3);">© 2026 HeritageX. All rights reserved.</div>
+    </footer>
   </div>
 
-  <!-- Modal -->
   <div class="modal" id="modal">
-    <div class="modalBox" role="dialog" aria-modal="true">
-      <h4>Tell Us Your Requirement</h4>
-      <p class="hint">
-        请填写您的需求（越具体越好）：<br/>
-        • 喜欢的车牌号（或类似号段）<br/>
-        • 车型 / 年份 / 版本<br/>
-        • 零部件描述 / 零件号 / VIN（如有）
-      </p>
-
-      <textarea id="reqMessage" placeholder="Describe your request..."></textarea>
-      <input id="reqEmail" type="email" placeholder="Your email (optional)" />
-
-      <div class="row">
-        <button class="btn2" id="closeBtn">Close</button>
-        <button class="btnPrimary" id="submitBtn">Submit Request</button>
+    <div class="modalBox">
+      <h4>New Requirement</h4>
+      
+      <div class="form-group">
+        <label>1. Interest / 主题</label>
+        <select id="reqSubject">
+          <option value="Heritage Plates">Heritage Plates (车牌)</option>
+          <option value="Classic Cars">Classic Cars (经典车)</option>
+          <option value="Rare Parts">Rare Parts (稀有零件)</option>
+        </select>
       </div>
-      <div class="note" id="status"></div>
+
+      <div class="form-group">
+        <label>2. Requirement Type / 类型</label>
+        <select id="reqType">
+          <option value="Sourcing / 求购">Sourcing / 求购</option>
+          <option value="Consignment / 寄卖">Consignment / 寄卖</option>
+          <option value="Valuation / 估值">Valuation / 估值</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>3. Details / 需求描述</label>
+        <textarea id="reqDesc" placeholder="Describe what you are looking for..."></textarea>
+        <div class="field-hint">提示：请包含车型、年份、号段或零件号 (VIN/Part No.)</div>
+      </div>
+
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-submit" onclick="submitToWA()">Submit Request</button>
+      </div>
     </div>
   </div>
 
   <script>
     const modal = document.getElementById('modal');
-    const statusEl = document.getElementById('status');
+    const phone = "61499987789"; // Your WhatsApp Number
 
-    function openModal(){
-      statusEl.textContent = '';
+    function openModal() {
       modal.classList.add('open');
-      document.getElementById('reqMessage').focus();
+      document.body.style.overflow = 'hidden';
     }
-    function closeModal(){
+
+    function closeModal() {
       modal.classList.remove('open');
+      document.body.style.overflow = 'auto';
     }
 
-    document.getElementById('openModalBtn').addEventListener('click', openModal);
-    document.getElementById('openModalBtn2').addEventListener('click', openModal);
-    document.getElementById('closeBtn').addEventListener('click', closeModal);
+    function submitToWA() {
+      const subject = document.getElementById('reqSubject').value;
+      const type = document.getElementById('reqType').value;
+      const desc = document.getElementById('reqDesc').value;
 
-    // 点击遮罩关闭
-    modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
-
-    // 先做“假提交”：后面接 Worker /api/request
-    document.getElementById('submitBtn').addEventListener('click', async () => {
-      const message = document.getElementById('reqMessage').value.trim();
-      const email = document.getElementById('reqEmail').value.trim();
-
-      if(!message){
-        statusEl.textContent = 'Please describe your request.';
+      if(!desc) {
+        alert("Please provide some details about your request.");
         return;
       }
 
-      // TODO: 接入 Cloudflare Worker 后，把下面替换成 fetch('/api/request', ...)
-      statusEl.textContent = 'Received. (Email delivery will be connected next.)';
-      setTimeout(() => { closeModal(); }, 700);
-    });
+      // Format message for WhatsApp
+      const message = `*New Request from HeritageX Website*%0A%0A` +
+                      `*Subject:* ${subject}%0A` +
+                      `*Type:* ${type}%0A` +
+                      `*Details:* ${desc}`;
+
+      const waUrl = `https://wa.me/${phone}?text=${message}`;
+      
+      // Open WhatsApp
+      window.open(waUrl, '_blank');
+      closeModal();
+    }
+
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
   </script>
 </body>
 </html>
